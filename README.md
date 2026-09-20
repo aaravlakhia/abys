@@ -69,8 +69,14 @@ The hero's entrance animation is the language for the entire page, extended into
   the pointer (rAF-throttled, `hover: hover` only).
 - **The chorus has depth.** Living voices sit forward at `translateZ(+18px)`; dead ones
   fall back to `-30px`. As you drag toward 2026 the chorus literally recedes from you.
-- **Records exist in space.** The decorative groove rings lie flat at `rotateX(66deg)`
-  and rotate; the corner deck is a turntable seen at an angle.
+- **Records exist in space.** Two groove records per section lie flat at `rotateX(66/72deg)`
+  and counter-rotate at different depths; the corner deck is a turntable seen at an angle.
+- **The background field is pinned to the viewport.** Each section's 3D stage is a
+  `position: sticky` viewport-height layer holding ~30 dust motes at staggered
+  `translateZ`. This matters: stretched over a full section (~5500px) the same field put
+  one or two motes on screen at a time and read as no background at all. The sections use
+  `overflow: clip` rather than `hidden`, since `hidden` would become the sticky scrollport
+  and kill the pin.
 - **The run-out groove is a tunnel** — six concentric rings at staggered depths flying
   past the viewer as the needle runs in.
 
