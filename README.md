@@ -9,6 +9,25 @@ no framework, no dependencies, no audio or image assets.
 Live idea: some species now exist only as a recording. The page treats that literally,
 presenting extinction as a back catalogue you can press play on.
 
+## Scope
+
+The catalogue spans the animal kingdom, not just birds — seven tracks across
+**birds, mammals (cetaceans), amphibians, invertebrates and the cryosphere**, each with
+its own synthesised voice and a filter to browse by class:
+
+| # | Track | Class | Status |
+|---|---|---|---|
+| REQ-001 | Kauaʻi ʻōʻō | Aves | Extinct 2023 |
+| REQ-002 | Ivory-billed woodpecker | Aves | Presumed extinct |
+| REQ-003 | Baiji (Yangtze river dolphin) | Mammalia | Functionally extinct 2006 |
+| REQ-004 | Rabbs' fringe-limbed treefrog | Amphibia | Extinct 2016 |
+| REQ-005 | Okjökull | Cryosphere | Gone 2014 |
+| REQ-006 | The flying insects | Insecta | Collapsing (−75% biomass) |
+| REQ-007 | **Vaquita** | Mammalia | **~10 left — still savable** |
+
+REQ-007 is deliberately last. It is the only track on the label that is not finished,
+and the page turns on that fact.
+
 ## The three things that make it work
 
 **1. REQ-001 plays the gap.**
@@ -59,7 +78,12 @@ This matters for an awareness project, so it is stated on the page too:
 
 ## Sources
 
+- WWF *Living Planet Index* (2024) — 73% average decline in monitored wildlife populations
 - Rosenberg et al., *Science* (2019) — 2.9 billion birds / ~29% decline since 1970
+- Hallmann et al., *PLOS ONE* (2017) — >75% loss of flying insect biomass over 27 years
+- Baiji: 2006 Yangtze survey recorded no detections; declared functionally extinct
+- Rabbs' fringe-limbed treefrog: last known individual died in Atlanta, 2016
+- Vaquita: ~10 remain; census is acoustic, clicks ~139 kHz (pitched down on this page)
 - Morrison et al., *Nature Communications* (2021) — 25 years of quieting soundscapes
 - Gordon et al., *Nature Communications* (2019) — coral reef acoustic enrichment
 - Kauaʻi ʻōʻō: 1987 Cornell Lab recording; declared extinct by USFWS, October 2023

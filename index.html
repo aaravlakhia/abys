@@ -28,6 +28,7 @@
   --ink:#0b0b0c;
   --sky:#dbe6ee;
   --rust:#e8705a;
+  --amber:#e8b25a;
   --nav-gap:clamp(1.1rem, 2.2vw, 2.15rem);
   --pad-x:clamp(1.25rem, 4vw, 3.6rem);
   --ease:cubic-bezier(.22,1,.36,1);
@@ -294,6 +295,74 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .rv.in{opacity:1;transform:none}
 
 
+
+/* ══════════════════════  ATMOSPHERE  ══════════════════════ */
+.grain{
+  position:fixed;inset:0;z-index:44;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.sleeve{background:radial-gradient(130% 90% at 50% 0%, #15161a 0%, #0e0e10 42%, #0b0b0c 72%)}
+.meadow{background:radial-gradient(130% 90% at 50% 0%, #e9f0f6 0%, #e1eaf1 40%, #dbe6ee 75%)}
+section.sleeve,section.meadow{position:relative;overflow:hidden}
+.grooves{
+  position:absolute;right:-24%;top:50%;transform:translateY(-50%);
+  width:min(980px,86vw);aspect-ratio:1;pointer-events:none;z-index:0;opacity:.55;
+}
+.grooves--left{right:auto;left:-28%}
+.shell{position:relative;z-index:1}
+
+/* ══════════════════════  STICKY MINI NAV  ══════════════════════ */
+.mini{
+  position:fixed;top:0;left:0;right:0;z-index:55;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.75rem var(--pad-x);color:var(--sky);
+  background:rgba(11,11,12,.78);
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid rgba(219,230,238,.12);
+  transform:translateY(-101%);transition:transform .55s var(--ease);
+}
+.mini.on{transform:none}
+.mini__mark{font-family:"UnifrakturCook",serif;font-weight:700;font-size:1.12rem;line-height:1}
+.mini__links{display:flex;gap:1.5rem;list-style:none;margin:0;padding:0}
+.mini__links a{font-size:.85rem;opacity:.72;transition:opacity .3s var(--ease)}
+.mini__links a:hover{opacity:1}
+.mini__bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--rust);transition:width .12s linear}
+.mini__menu{display:none;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:.5rem .4rem}
+section[id],.track,.life,#tracks{scroll-margin-top:76px}
+
+/* ══════════════════════  TRACK UI  ══════════════════════ */
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:clamp(2.2rem,4vw,3rem) 0 0}
+.filters .chip{font-size:.74rem;padding:.55rem 1rem;opacity:.5;border-color:rgba(219,230,238,.4)}
+.filters .chip:hover{opacity:.9}
+.filters .chip.active{opacity:1;background:var(--sky);border-color:var(--sky)}
+.filters .chip.active span{color:var(--ink)}
+.filters .chip b{font-weight:400;opacity:.5;margin-left:.45rem;font-size:.9em}
+.track[hidden]{display:none}
+.track__head{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem;margin-bottom:.55rem}
+.klass{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;opacity:.45;border:1px solid currentColor;border-radius:3px;padding:.25rem .45rem}
+.badge{display:inline-flex;align-items:center;gap:.4rem;font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;padding:.3rem .6rem;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge--gone{color:var(--rust)}
+.badge--alive{color:var(--amber)}
+.badge i{width:5px;height:5px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.badge--alive i{animation:blip 1.6s ease-in-out infinite}
+@keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
+.track{transition:opacity .4s var(--ease)}
+.track__meta .alive{color:var(--amber);opacity:1}
+.tracks__coda{
+  margin:clamp(2.2rem,4vw,3rem) 0 0;font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.3;max-width:34ch;
+}
+.tracks__coda b{color:var(--amber);font-weight:400}
+.figs--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.figs--3 .fig__n{font-size:clamp(2.6rem,5.4vw,4.2rem)}
+.fig__src{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;opacity:.4;margin:.8rem 0 0}
+
+@media (max-width:900px){
+  .mini__links{display:none}
+  .mini__menu{display:block}
+  .figs--3{grid-template-columns:1fr}
+  .grooves{opacity:.35}
+}
 /* ══════════════════════  SHARE CARD  ══════════════════════ */
 .card{margin-top:2.2rem;padding-top:1.8rem;border-top:1px solid rgba(219,230,238,.16)}
 .card__h{font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;opacity:.55;margin:0 0 1.1rem}
@@ -370,11 +439,27 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .hush__stick{position:static;height:auto;padding:clamp(4rem,10vw,7rem) 0}
   .hush__l{position:static;transform:none;opacity:1;margin:0 auto 1.5rem;width:auto;max-width:24ch}
   .hush__ring,.hush__tag{display:none}
+  .grain{display:none}
+  .badge--alive i{animation:none}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#catalogue">Skip to the archive</a>
+
+<div class="grain" aria-hidden="true"></div>
+
+<div class="mini" id="mini">
+  <a class="mini__mark" href="#" aria-label="Requiem — top">Requiem</a>
+  <ul class="mini__links">
+    <li><a href="#catalogue">Catalogue</a></li>
+    <li><a href="#chorus">Chorus</a></li>
+    <li><a href="#evidence">Evidence</a></li>
+    <li><a href="#act">Act</a></li>
+  </ul>
+  <button class="mini__menu" id="miniMenu" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+  <div class="mini__bar" id="miniBar" aria-hidden="true"></div>
+</div>
 
 <section class="hero">
   <div class="hero__media">
@@ -429,6 +514,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 <!-- ═══════════════════════  CATALOGUE  ═══════════════════════ -->
 <section class="sleeve" id="catalogue">
+  <svg class="grooves" viewBox="0 0 600 600" aria-hidden="true"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
   <div class="shell">
     <p class="tag rv">
       <svg class="disc" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -442,10 +528,23 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     <h2 class="sec-title rv">Every artist on this label<br>is <em>already gone.</em></h2>
     <p class="say rv">These recordings exist. What they recorded does not. There is no remaster coming, no reunion tour, no second take — the master tape is the entire remaining evidence that the sound was ever made on Earth. Every track below is synthesised live in your browser from what the originals are described to sound like.</p>
 
-    <div class="tracks">
-      <article class="track rv">
+    <div class="filters" id="filters" role="group" aria-label="Filter the catalogue by class">
+      <button class="chip active" type="button" data-filter="all"><span>All<b>7</b></span></button>
+      <button class="chip" type="button" data-filter="aves"><span>Birds<b>2</b></span></button>
+      <button class="chip" type="button" data-filter="mammalia"><span>Mammals<b>2</b></span></button>
+      <button class="chip" type="button" data-filter="amphibia"><span>Amphibians<b>1</b></span></button>
+      <button class="chip" type="button" data-filter="insecta"><span>Insects<b>1</b></span></button>
+      <button class="chip" type="button" data-filter="cryosphere"><span>Ice<b>1</b></span></button>
+    </div>
+
+    <div class="tracks" id="tracks">
+      <article class="track rv" data-class="aves">
         <div class="track__no">REQ‑001</div>
         <div>
+          <div class="track__head">
+            <span class="klass">Aves · bird</span>
+            <span class="badge badge--gone"><i></i>Extinct 2023</span>
+          </div>
           <h3 class="track__name">Kauaʻi ʻōʻō</h3>
           <p class="track__where">Alakaʻi plateau, Kauaʻi, Hawaiʻi</p>
           <p class="track__note">The male half of a mating duet. He sings his part, then leaves a gap for the female's answer. The gap is the reason this recording is unbearable — there was no female left to fill it. He was the last of his species, singing to an empty forest.</p>
@@ -455,16 +554,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
               <span>Play the gap</span>
             </button>
             <p class="sr">A looping reconstruction. Each cycle plays his two-note phrase, then roughly three and a half seconds of forest where the female's answering phrase belongs. No answer ever arrives.</p>
-            <div class="player__groove" aria-hidden="true">
-              <div class="player__note" style="left:3%;height:22px"></div>
-              <div class="player__note" style="left:11%;height:32px"></div>
-              <div class="player__gap" style="left:22%;right:0"><span>her answer</span></div>
-              <div class="player__head"></div>
-            </div>
-            <p class="player__meta" aria-hidden="true">
-              <span>He has called <b data-count>0</b></span>
-              <span>Answers <b class="zero">0</b></span>
-            </p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:3%;height:22px"></div><div class="player__note" style="left:11%;height:32px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>He has called <b data-count>0</b></span><span>Answers <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of the two-note call — not the archival audio. The 1987 original is held by the Cornell Lab of Ornithology.</p>
           </div>
         </div>
@@ -473,10 +564,13 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <span class="gone">Extinct <b>2023</b></span>
         </div>
       </article>
-
-      <article class="track rv">
+      <article class="track rv" data-class="aves">
         <div class="track__no">REQ‑002</div>
         <div>
+          <div class="track__head">
+            <span class="klass">Aves · bird</span>
+            <span class="badge badge--gone"><i></i>Presumed extinct</span>
+          </div>
           <h3 class="track__name">Ivory‑billed woodpecker</h3>
           <p class="track__where">Singer Tract, Louisiana</p>
           <p class="track__note">A 1935 expedition hauled a tonne of recording equipment into old‑growth swamp and captured its double knock — two hammer blows on a trunk, a tenth of a second apart — and its flat, nasal call. The forest was logged soon after.</p>
@@ -486,13 +580,8 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
               <span>Play the double knock</span>
             </button>
             <p class="sr">A looping reconstruction of the double knock and the nasal call, over swamp ambience.</p>
-            <div class="player__groove" aria-hidden="true">
-              <div class="player__note" style="left:4%;height:36px"></div>
-              <div class="player__note" style="left:7%;height:30px"></div>
-              <div class="player__note" style="left:44%;height:18px"></div>
-              <div class="player__head"></div>
-            </div>
-            <p class="player__meta" aria-hidden="true"><span>Knocks <b data-count>0</b></span><span>Confirmed sightings since 1944 <b class="zero">0</b></span></p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:36px"></div><div class="player__note" style="left:7%;height:30px"></div><div class="player__note" style="left:44%;height:18px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>Knocks <b data-count>0</b></span><span>Confirmed since <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction. The 1935 Cornell Lab recordings are the only widely accepted audio of the species.</p>
           </div>
         </div>
@@ -501,25 +590,75 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <span class="gone">Last seen <b>1944</b></span>
         </div>
       </article>
-
-      <article class="track rv">
+      <article class="track rv" data-class="mammalia">
         <div class="track__no">REQ‑003</div>
         <div>
+          <div class="track__head">
+            <span class="klass">Mammalia · cetacean</span>
+            <span class="badge badge--gone"><i></i>Functionally extinct</span>
+          </div>
+          <h3 class="track__name">Baiji</h3>
+          <p class="track__where">Yangtze River, China</p>
+          <p class="track__note">The goddess of the Yangtze. River dolphins navigate by sound because the water is too silty to see through — so the last surveys hunted them with hydrophones instead of eyes. In 2006 a six‑week expedition swept the entire river and heard nothing at all.</p>
+          <div class="player" id="p-baiji" data-player="baiji" data-name="Baiji">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the clicks</span>
+            </button>
+            <p class="sr">A looping reconstruction of echolocation click trains and a contact whistle, over river ambience.</p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:5%;height:16px"></div><div class="player__note" style="left:8%;height:26px"></div><div class="player__note" style="left:11%;height:20px"></div><div class="player__note" style="left:14%;height:30px"></div><div class="player__note" style="left:17%;height:18px"></div><div class="player__note" style="left:46%;height:24px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>Click trains <b data-count>0</b></span><span>Detections in 2006 <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction of a river‑dolphin click train. The 2006 Yangtze survey recorded no baiji detections.</p>
+          </div>
+        </div>
+        <div class="track__meta">
+          <span>Surveyed <b>1990s</b></span>
+          <span class="gone">Functionally extinct <b>2006</b></span>
+        </div>
+      </article>
+      <article class="track rv" data-class="amphibia">
+        <div class="track__no">REQ‑004</div>
+        <div>
+          <div class="track__head">
+            <span class="klass">Amphibia · frog</span>
+            <span class="badge badge--gone"><i></i>Extinct 2016</span>
+          </div>
+          <h3 class="track__name">Rabbs’ fringe‑limbed treefrog</h3>
+          <p class="track__where">Central Panama</p>
+          <p class="track__note">A chytrid fungus swept Panama faster than anyone could collect survivors. The last known individual, a male kept in Atlanta and nicknamed Toughie, called for years into a room with no other frog in it. He died in 2016 and took the species with him.</p>
+          <div class="player" id="p-frog" data-player="frog" data-name="Rabbs’ fringe‑limbed treefrog">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the call</span>
+            </button>
+            <p class="sr">A looping reconstruction of the repeated barking call, over night ambience.</p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:26px"></div><div class="player__note" style="left:16%;height:26px"></div><div class="player__note" style="left:28%;height:26px"></div><div class="player__note" style="left:40%;height:26px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>Calls <b data-count>0</b></span><span>Replies <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction of the barking call. Amphibians are the most threatened class of vertebrates on Earth.</p>
+          </div>
+        </div>
+        <div class="track__meta">
+          <span>Recorded <b>2005</b></span>
+          <span class="gone">Last individual died <b>2016</b></span>
+        </div>
+      </article>
+      <article class="track rv" data-class="cryosphere">
+        <div class="track__no">REQ‑005</div>
+        <div>
+          <div class="track__head">
+            <span class="klass">Cryosphere · ice</span>
+            <span class="badge badge--gone"><i></i>Gone 2014</span>
+          </div>
           <h3 class="track__name">Okjökull</h3>
           <p class="track__where">Borgarfjörður, west Iceland</p>
-          <p class="track__note">Not an animal — a glacier. Meltwater, shifting ice, the low structural groan of a body of ice big enough to have a name. In 2014 it stopped being a glacier. A plaque was bolted to the bare rock in 2019, addressed to whoever comes next.</p>
+          <p class="track__note">Not an animal — the stage they all stand on. Meltwater, shifting ice, the low structural groan of a body of ice big enough to have a name. In 2014 it stopped being a glacier. A plaque was bolted to the bare rock in 2019, addressed to whoever comes next.</p>
           <div class="player" id="p-ice" data-player="ice" data-name="Okjökull">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the ice</span>
             </button>
             <p class="sr">A continuous reconstruction: low structural rumble, meltwater, and the occasional crack of shifting ice.</p>
-            <div class="player__groove" aria-hidden="true">
-              <div class="player__note" style="left:16%;height:14px"></div>
-              <div class="player__note" style="left:38%;height:26px"></div>
-              <div class="player__note" style="left:71%;height:12px"></div>
-              <div class="player__head"></div>
-            </div>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:16%;height:14px"></div><div class="player__note" style="left:38%;height:26px"></div><div class="player__note" style="left:71%;height:12px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Cracks <b data-count>0</b></span><span>Ice remaining <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of a glacial soundscape. Okjökull lost glacier status in 2014; the memorial plaque went up in August 2019.</p>
           </div>
@@ -529,7 +668,61 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
           <span class="gone">Declared dead <b>2014</b></span>
         </div>
       </article>
+      <article class="track rv" data-class="insecta">
+        <div class="track__no">REQ‑006</div>
+        <div>
+          <div class="track__head">
+            <span class="klass">Insecta · invertebrate</span>
+            <span class="badge badge--alive"><i></i>Collapsing</span>
+          </div>
+          <h3 class="track__name">The flying insects</h3>
+          <p class="track__where">Krefeld reserves, Germany</p>
+          <p class="track__note">No single species — the layer underneath all the others. Volunteers ran the same malaise traps in the same nature reserves for twenty‑seven years and weighed what they caught. Three quarters of the biomass simply stopped arriving. This is the sound that used to fill a summer field.</p>
+          <div class="player" id="p-insects" data-player="insects" data-name="The flying insects">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the field</span>
+            </button>
+            <p class="sr">A looping reconstruction of a summer field chorus: cricket stridulation and cicada drone.</p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:6%;height:18px"></div><div class="player__note" style="left:19%;height:24px"></div><div class="player__note" style="left:33%;height:16px"></div><div class="player__note" style="left:48%;height:22px"></div><div class="player__note" style="left:62%;height:18px"></div><div class="player__note" style="left:77%;height:24px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>Chirps <b data-count>0</b></span><span>Percent returning <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction of a field chorus. Hallmann et al. (2017) measured a decline of more than 75% in flying insect biomass over 27 years.</p>
+          </div>
+        </div>
+        <div class="track__meta">
+          <span>Trapped <b>1989–2016</b></span>
+          <span class="gone">Biomass lost <b>75%</b></span>
+        </div>
+      </article>
+      <article class="track rv" data-class="mammalia">
+        <div class="track__no">REQ‑007</div>
+        <div>
+          <div class="track__head">
+            <span class="klass">Mammalia · cetacean</span>
+            <span class="badge badge--alive"><i></i>~10 left · still savable</span>
+          </div>
+          <h3 class="track__name">Vaquita</h3>
+          <p class="track__where">Gulf of California, Mexico</p>
+          <p class="track__note">The only track on this label that is not finished. Around ten individuals remain, and nobody can see them — the entire census is acoustic. Every year researchers drop hydrophones and count clicks, because the clicks are the last reliable proof the species is still there.</p>
+          <div class="player" id="p-vaquita" data-player="vaquita" data-name="Vaquita">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play what is left</span>
+            </button>
+            <p class="sr">A looping reconstruction of narrow‑band high‑frequency click trains, pitched down into human hearing, over ocean ambience.</p>
+            <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:14px"></div><div class="player__note" style="left:6%;height:20px"></div><div class="player__note" style="left:8%;height:16px"></div><div class="player__note" style="left:10%;height:24px"></div><div class="player__note" style="left:12%;height:14px"></div><div class="player__note" style="left:35%;height:18px"></div><div class="player__note" style="left:37%;height:26px"></div><div class="player__note" style="left:39%;height:16px"></div><div class="player__note" style="left:66%;height:20px"></div><div class="player__note" style="left:68%;height:14px"></div><div class="player__head"></div></div>
+            <p class="player__meta" aria-hidden="true"><span>Clicks heard <b data-count>0</b></span><span>Time remaining <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction. Real vaquita clicks sit around 139 kHz — far above human hearing; pitched down here so you can hear roughly what the hydrophones do.</p>
+          </div>
+        </div>
+        <div class="track__meta">
+          <span>Still recording <b>now</b></span>
+          <span class="alive">Individuals left <b>~10</b></span>
+        </div>
+      </article>
     </div>
+
+    <p class="tracks__coda">REQ‑007 is the only track on this label<br>that is <b>not finished yet.</b></p>
   </div>
 </section>
 
@@ -573,14 +766,21 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     <p class="tag rv">The volume knob is turning left</p>
     <h2 class="sec-title rv">This is not a handful of rare birds.<br>It is the <em>background noise of the planet.</em></h2>
 
-    <div class="figs">
+    <div class="figs figs--3">
+      <div class="rv">
+        <p class="fig__n"><span data-countup="73" data-dp="0">0</span>%</p>
+        <p class="fig__t">average decline in the size of monitored wildlife populations worldwide since 1970 — mammals, birds, fish, reptiles and amphibians together.</p>
+        <p class="fig__src">WWF Living Planet Index, 2024</p>
+      </div>
       <div class="rv">
         <p class="fig__n"><span data-countup="2.9" data-dp="1">0</span> billion</p>
         <p class="fig__t">breeding birds lost from the United States and Canada since 1970 — roughly one in four, gone in a single human lifetime.</p>
+        <p class="fig__src">Rosenberg et al., Science, 2019</p>
       </div>
       <div class="rv">
-        <p class="fig__n"><span data-countup="25" data-dp="0">0</span> years</p>
-        <p class="fig__t">of recordings across North America and Europe show dawn choruses growing measurably quieter and less varied. The spring you remember was louder. That is not nostalgia — it is data.</p>
+        <p class="fig__n"><span data-countup="75" data-dp="0">0</span>%</p>
+        <p class="fig__t">of flying insect biomass gone from German nature reserves in twenty‑seven years — the layer the birds, bats and frogs all eat from.</p>
+        <p class="fig__src">Hallmann et al., PLOS ONE, 2017</p>
       </div>
     </div>
 
@@ -613,6 +813,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 
 <!-- ═══════════════════════  PLAYBACK / HOPE  ═══════════════════════ -->
 <section class="meadow" id="playback">
+  <svg class="grooves grooves--left" viewBox="0 0 600 600" aria-hidden="true"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
   <div class="shell">
     <p class="tag rv">The part nobody expects</p>
     <h2 class="sec-title rv">Here is the strangest thing<br>we have learned: <em>playback works.</em></h2>
@@ -968,6 +1169,74 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       }
     });
 
+    var baiji = document.getElementById('p-baiji');
+    if (baiji) mountTrack(baiji, {
+      cycle: 3.0,
+      beds: function(){ return [ bed(420, .5, .05, 'lowpass') ]; },
+      fire: function(t){
+        var n = 12 + Math.floor(Math.random() * 9);
+        for (var i = 0; i < n; i++) burst(t + i * (.022 + Math.random() * .014), 5200 + Math.random() * 2200, 1.6, .22, .012, 'highpass');
+        if (Math.random() < .5){
+          var w = t + .9 + Math.random() * .5;
+          tone(w, 3600, 6400, .34, .05, 'sine', false);
+        }
+        return 1;
+      }
+    });
+
+    var frog = document.getElementById('p-frog');
+    if (frog) mountTrack(frog, {
+      cycle: 3.6,
+      beds: function(){ return [ bed(5200, 1.1, .022), bed(240, .6, .035, 'lowpass') ]; },
+      fire: function(t){
+        var reps = 3 + Math.floor(Math.random() * 3);
+        for (var i = 0; i < reps; i++){
+          var tt = t + i * .40;
+          // a bark is a fast pulse train, not a clean tone
+          for (var k = 0; k < 7; k++) tone(tt + k * .016, 1150 - k * 22, 980, .028, .085, 'sawtooth', false);
+        }
+        return reps;
+      }
+    });
+
+    var ins = document.getElementById('p-insects');
+    if (ins) mountTrack(ins, {
+      cycle: 1.8,
+      beds: function(){ return [ bed(4600, 2.4, .028), bed(7200, 3, .012) ]; },
+      fire: function(t){
+        var hits = 0;
+        // crickets: short stridulating bursts
+        for (var v = 0; v < 4; v++){
+          if (Math.random() < .7){
+            var base = 3900 + v * 420 + Math.random() * 260;
+            var at = t + Math.random() * 1.5;
+            for (var k = 0; k < 4; k++) tone(at + k * .034, base, base * .96, .022, .05, 'triangle', false);
+            hits++;
+          }
+        }
+        // cicada drone underneath
+        if (Math.random() < .35) tone(t + Math.random(), 2600, 2450, .9, .022, 'sawtooth', true);
+        return hits;
+      }
+    });
+
+    var vaq = document.getElementById('p-vaquita');
+    if (vaq) mountTrack(vaq, {
+      cycle: 2.4,
+      beds: function(){ return [ bed(300, .5, .055, 'lowpass') ]; },
+      fire: function(t){
+        // narrow-band high-frequency click trains, pitched into hearing
+        var trains = 1 + Math.floor(Math.random() * 2), fired = 0;
+        for (var s = 0; s < trains; s++){
+          var start = t + s * (.7 + Math.random() * .5);
+          var n = 16 + Math.floor(Math.random() * 14);
+          for (var i = 0; i < n; i++) burst(start + i * .016, 4300 + Math.random() * 500, 6, .17, .008, 'bandpass');
+          fired++;
+        }
+        return fired;
+      }
+    });
+
     var ice = document.getElementById('p-ice');
     if (ice) mountTrack(ice, {
       cycle: 2.6,
@@ -1209,6 +1478,57 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   window.addEventListener('scroll', onHush, { passive:true });
   window.addEventListener('resize', onHush, { passive:true });
   onHush();
+
+  /* ═══════════════ catalogue filters ═══════════════ */
+  var filterBar = document.getElementById('filters');
+  if (filterBar){
+    var allTracks = Array.prototype.slice.call(document.querySelectorAll('.track'));
+    filterBar.addEventListener('click', function(e){
+      var btn = e.target.closest('.chip');
+      if (!btn) return;
+      var want = btn.getAttribute('data-filter');
+      Array.prototype.forEach.call(filterBar.querySelectorAll('.chip'), function(c){
+        c.classList.toggle('active', c === btn);
+      });
+      allTracks.forEach(function(tr){
+        var show = (want === 'all') || tr.getAttribute('data-class') === want;
+        // never leave a hidden track still playing
+        if (!show){
+          var pl = tr.querySelector('[data-player]');
+          if (pl){
+            var id = pl.getAttribute('data-player');
+            if (registry[id] && registry[id].playing) registry[id].stop();
+          }
+        }
+        if (show) tr.removeAttribute('hidden'); else tr.setAttribute('hidden','');
+        tr.classList.add('in');
+      });
+    });
+  }
+
+  /* ═══════════════ sticky mini nav ═══════════════ */
+  var mini = document.getElementById('mini');
+  var miniBar = document.getElementById('miniBar');
+  var miniMenu = document.getElementById('miniMenu');
+  if (miniMenu){
+    miniMenu.addEventListener('click', function(){ setMenu(!open); });
+  }
+  function onMini(){
+    if (!mini) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
+    mini.classList.toggle('on', window.pageYOffset > window.innerHeight * .85);
+    if (miniBar) miniBar.style.width = (p * 100).toFixed(2) + '%';
+    if (miniMenu){
+      miniMenu.textContent = open ? 'Close' : 'Menu';
+      miniMenu.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+  }
+  window.addEventListener('scroll', onMini, { passive:true });
+  window.addEventListener('resize', onMini, { passive:true });
+  burger.addEventListener('click', onMini);
+  if (miniMenu) miniMenu.addEventListener('click', onMini);
+  onMini();
 
 })();
 </script>
