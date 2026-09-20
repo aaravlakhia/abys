@@ -344,6 +344,61 @@ body.menu-open{overflow:hidden}
 .track__meta b{font-weight:500;opacity:.95}
 .track__meta .gone{color:#e8705a;opacity:1}
 
+/* ── the player that plays the gap ── */
+.player{
+  margin:1.6rem 0 0;
+  padding:1.4rem 1.5rem 1.3rem;
+  border:1px solid rgba(219,230,238,.22);
+  border-radius:10px;
+  max-width:52ch;
+  background:rgba(219,230,238,.035);
+}
+.player__btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--sky);color:var(--ink);
+  border-radius:6px;padding:.7rem 1.1rem;
+  font-size:.92rem;line-height:1;
+  transition:transform .45s var(--ease), background-color .45s var(--ease);
+}
+.player__btn:hover{transform:translateY(-2px);background:#fff}
+.player__btn svg{flex:0 0 auto}
+.player__groove{
+  position:relative;
+  height:54px;
+  margin:1.2rem 0 .9rem;
+  border-top:1px solid rgba(219,230,238,.16);
+  border-bottom:1px solid rgba(219,230,238,.16);
+}
+.player__note{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:3px;border-radius:3px;background:var(--sky);opacity:.85;
+}
+.player__gap{
+  position:absolute;top:8px;bottom:8px;left:22%;right:0;
+  border:1px dashed rgba(232,112,90,.5);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+}
+.player__gap span{
+  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#e8705a;opacity:.85;
+}
+.player__head{
+  position:absolute;top:0;bottom:0;left:0;width:1px;
+  background:var(--sky);opacity:0;
+}
+.player.is-playing .player__head{opacity:.9}
+.player__meta{
+  display:flex;gap:1.6rem;flex-wrap:wrap;
+  margin:0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55;
+}
+.player__meta b{font-weight:500;opacity:1}
+.player__meta .zero{color:#e8705a}
+.player__disc{
+  margin:1rem 0 0;font-size:.72rem;line-height:1.6;opacity:.42;
+}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
 /* numbers */
 .figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(2rem,5vw,4.5rem);margin-top:clamp(2.8rem,5vw,4rem)}
 .fig__n{
@@ -532,6 +587,38 @@ body.menu-open{overflow:hidden}
           <h3 class="track__name">Kauaʻi ʻōʻō</h3>
           <p class="track__where">Alakaʻi plateau, Kauaʻi, Hawaiʻi</p>
           <p class="track__note">The male half of a mating duet. He sings his part, then leaves a gap for the female's answer. The gap is the reason this recording is unbearable — there was no female left to fill it. He was the last of his species, singing to an empty forest.</p>
+
+          <div class="player" id="ooPlayer">
+            <button class="player__btn" id="ooPlay" type="button" aria-pressed="false">
+              <svg id="ooIcon" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true">
+                <path d="M1 1.2v11.6L11 7z" fill="currentColor"/>
+              </svg>
+              <span id="ooLabel">Play the gap</span>
+            </button>
+
+            <p class="sr">
+              A looping reconstruction of the call. Each cycle plays his two-note phrase,
+              followed by roughly three and a half seconds of forest ambience where the
+              female's answering phrase would be. No answer ever arrives.
+            </p>
+
+            <div class="player__groove" aria-hidden="true">
+              <div class="player__note" style="left:3%;height:22px"></div>
+              <div class="player__note" style="left:11%;height:32px"></div>
+              <div class="player__gap"><span>her answer</span></div>
+              <div class="player__head" id="ooHead"></div>
+            </div>
+
+            <p class="player__meta" aria-hidden="true">
+              <span>He has called <b id="ooCount">0</b></span>
+              <span>Answers <b class="zero">0</b></span>
+            </p>
+
+            <p class="player__disc">
+              Synthesised reconstruction of the two-note call, generated in your browser —
+              not the archival audio. The 1987 original is held by the Cornell Lab of Ornithology.
+            </p>
+          </div>
         </div>
         <div class="track__meta">
           <span>Recorded <b>1987</b></span>
@@ -692,6 +779,129 @@ body.menu-open{overflow:hidden}
       });
     }, { rootMargin:'0px 0px -12% 0px' });
     items.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ── REQ-001: the call, and the gap where the answer should be ── */
+  var wrap  = document.getElementById('ooPlayer');
+  var btn   = document.getElementById('ooPlay');
+  var label = document.getElementById('ooLabel');
+  var icon  = document.getElementById('ooIcon');
+  var head  = document.getElementById('ooHead');
+  var count = document.getElementById('ooCount');
+
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (btn && AC) {
+    var CYCLE = 4.6;                 // seconds: phrase (~1s) + the silence (~3.6s)
+    var ctx, master, verb, bed, bedGain;
+    var timer = null, raf = null, on = false, calls = 0, cycleAt = 0;
+
+    // a short decaying-noise impulse gives the call a forest tail
+    function impulse(){
+      var n = Math.floor(ctx.sampleRate * 1.8);
+      var buf = ctx.createBuffer(2, n, ctx.sampleRate);
+      for (var c = 0; c < 2; c++){
+        var d = buf.getChannelData(c);
+        for (var i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/n, 2.6);
+      }
+      return buf;
+    }
+
+    // quiet band-passed noise — the forest keeps going through the silence
+    function ambience(){
+      var n = Math.floor(ctx.sampleRate * 2);
+      var buf = ctx.createBuffer(1, n, ctx.sampleRate);
+      var d = buf.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = Math.random()*2-1;
+      var src = ctx.createBufferSource();
+      src.buffer = buf; src.loop = true;
+      var bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 2200; bp.Q.value = .45;
+      bedGain = ctx.createGain(); bedGain.gain.value = 0;
+      src.connect(bp); bp.connect(bedGain); bedGain.connect(master);
+      src.start();
+      bedGain.gain.linearRampToValueAtTime(.05, ctx.currentTime + 1.4);
+      return src;
+    }
+
+    // one pure, vibrato'd whistle note that glides downward
+    function tone(t, f0, f1, dur, peak){
+      var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
+      var lfo = ctx.createOscillator(), lg = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(f0, t);
+      o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      lfo.frequency.value = 5.4; lg.gain.value = f0 * .013;
+      lfo.connect(lg); lg.connect(o.frequency);
+      lp.type = 'lowpass'; lp.frequency.value = 3400;
+      g.gain.setValueAtTime(.0001, t);
+      g.gain.exponentialRampToValueAtTime(peak, t + .05);
+      g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      o.connect(lp); lp.connect(g); g.connect(master); g.connect(verb);
+      lfo.start(t); o.start(t);
+      lfo.stop(t + dur + .05); o.stop(t + dur + .05);
+    }
+
+    function phrase(t){
+      tone(t,        1180, 1120, .30, .16);   // "oh-"
+      tone(t + .42,   960,  880, .58, .14);   // "-oh", falling, then nothing
+    }
+
+    function cycle(){
+      phrase(ctx.currentTime + .06);
+      calls++;
+      if (count) count.textContent = calls;
+      cycleAt = performance.now();
+      timer = setTimeout(cycle, CYCLE * 1000);
+    }
+
+    function sweep(){
+      if (!on) return;
+      var p = ((performance.now() - cycleAt) / (CYCLE * 1000)) % 1;
+      head.style.left = (p * 100).toFixed(2) + '%';
+      raf = requestAnimationFrame(sweep);
+    }
+
+    function start(){
+      if (!ctx){
+        ctx = new AC();
+        master = ctx.createGain(); master.gain.value = .9; master.connect(ctx.destination);
+        verb = ctx.createConvolver(); verb.buffer = impulse();
+        var vg = ctx.createGain(); vg.gain.value = .5;
+        verb.connect(vg); vg.connect(ctx.destination);
+        bed = ambience();
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+      on = true;
+      wrap.classList.add('is-playing');
+      btn.setAttribute('aria-pressed', 'true');
+      label.textContent = 'Stop';
+      icon.innerHTML = '<rect x="1" y="1.2" width="3.6" height="11.6" fill="currentColor"/><rect x="7.4" y="1.2" width="3.6" height="11.6" fill="currentColor"/>';
+      cycle();
+      sweep();
+    }
+
+    function stop(){
+      on = false;
+      if (timer) { clearTimeout(timer); timer = null; }
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      if (bedGain) bedGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .4);
+      wrap.classList.remove('is-playing');
+      btn.setAttribute('aria-pressed', 'false');
+      label.textContent = 'Play the gap';
+      icon.innerHTML = '<path d="M1 1.2v11.6L11 7z" fill="currentColor"/>';
+    }
+
+    btn.addEventListener('click', function(){ on ? stop() : start(); });
+
+    // stop it if the listener scrolls away — it should never follow them down the page
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (!e.isIntersecting && on) stop(); });
+      }, { threshold:0 }).observe(wrap);
+    }
+  } else if (btn) {
+    btn.disabled = true;
+    label.textContent = 'Audio unsupported';
   }
 })();
 </script>
