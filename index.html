@@ -37,7 +37,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:88px}
 body{
   margin:0;color:var(--ink);background:var(--sky);overflow-x:hidden;
   font-family:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
@@ -315,16 +315,16 @@ section.sleeve,section.meadow{position:relative;overflow:hidden}
 .mini{
   position:fixed;top:0;left:0;right:0;z-index:55;
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
-  padding:.75rem var(--pad-x);color:var(--sky);
+  padding:.25rem var(--pad-x);color:var(--sky);
   background:rgba(11,11,12,.78);
   backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
   border-bottom:1px solid rgba(219,230,238,.12);
   transform:translateY(-101%);transition:transform .55s var(--ease);
 }
 .mini.on{transform:none}
-.mini__mark{font-family:"UnifrakturCook",serif;font-weight:700;font-size:1.12rem;line-height:1}
+.mini__mark{font-family:"UnifrakturCook",serif;font-weight:700;font-size:1.12rem;line-height:1;display:inline-flex;align-items:center;min-height:44px;padding:0 .2rem}
 .mini__links{display:flex;gap:1.5rem;list-style:none;margin:0;padding:0}
-.mini__links a{font-size:.85rem;opacity:.72;transition:opacity .3s var(--ease)}
+.mini__links a{font-size:.85rem;opacity:.72;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:24px;padding-inline:.4rem;transition:opacity .3s var(--ease)}
 .mini__links a:hover{opacity:1}
 .mini__bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--rust);transition:width .12s linear}
 .mini__menu{display:none;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;padding:.5rem .4rem}
@@ -455,6 +455,56 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
   .hush__ring i{display:none}
   .hush__l,.hush__l.on{transform:translate(-50%,-50%)}
 }
+
+/* ══════════════════════  3D BACKGROUND STAGE  ══════════════════════ */
+.stage{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;perspective:820px;perspective-origin:50% 38%}
+.motes{position:absolute;inset:0;transform-style:preserve-3d}
+.motes i{
+  position:absolute;width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.14;
+  transform:translateZ(var(--z));
+  animation:moteDrift var(--dur) ease-in-out infinite;animation-delay:var(--dl);
+}
+@keyframes moteDrift{
+  0%,100%{transform:translateZ(var(--z)) translate3d(0,0,0)}
+  50%{transform:translateZ(var(--z)) translate3d(14px,-26px,40px)}
+}
+
+/* ══════════════════════  FLIP CASE FILE  ══════════════════════ */
+.flipbox{max-width:54ch;margin:1.6rem 0 0;perspective:1500px}
+.flip{position:relative;transform-style:preserve-3d;transition:transform .95s var(--ease)}
+.flip.flipped{transform:rotateY(180deg)}
+.flip__face{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip__back{position:absolute;inset:0;transform:rotateY(180deg);overflow:hidden}
+.flipbox .player{margin:0;max-width:none;height:100%}
+.casefile{
+  height:100%;padding:1.4rem 1.5rem 1.3rem;border:1px solid rgba(219,230,238,.28);
+  border-radius:10px;background:rgba(219,230,238,.06);display:flex;flex-direction:column;
+}
+.case__h{margin:0 0 1rem;font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;opacity:.5}
+.case__dl{margin:0;display:grid;grid-template-columns:auto;gap:.15rem}
+.case__dl dt{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;opacity:.45;margin-top:.7rem}
+.case__dl dt:first-child{margin-top:0}
+.case__dl dd{margin:0;font-size:.9rem;line-height:1.5;opacity:.85}
+.case__need{margin:1.1rem 0 0;font-family:"Instrument Serif",Georgia,serif;font-size:1.05rem;line-height:1.35}
+.case__need span{display:block;font-family:"Instrument Sans",sans-serif;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;opacity:.45;margin-bottom:.4rem}
+.case__flip{
+  margin-top:auto;align-self:flex-start;padding:.62rem .95rem;min-height:44px;
+  border:1px solid currentColor;border-radius:999px;font-size:.74rem;letter-spacing:.14em;
+  text-transform:uppercase;opacity:.6;
+  transition:opacity .35s var(--ease), transform .45s var(--ease);
+}
+.case__flip:hover{opacity:1;transform:perspective(500px) translateZ(10px)}
+.case__flip--open{margin-top:1.1rem}
+
+/* skill fixes: progress bar on transform not width; taps; focus clears sticky nav */
+.mini__bar{width:100%;transform:scaleX(0);transform-origin:left;transition:transform .12s linear}
+button,a,input,summary{touch-action:manipulation}
+
+@media (prefers-reduced-motion:reduce){
+  .motes i{animation:none;transform:none}
+  .flip{transition:none}
+}
+@media (max-width:900px){ .flipbox{max-width:none} }
 /* ══════════════════════  SHARE CARD  ══════════════════════ */
 .card{margin-top:2.2rem;padding-top:1.8rem;border-top:1px solid rgba(219,230,238,.16)}
 .card__h{font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;opacity:.55;margin:0 0 1.1rem}
@@ -555,7 +605,7 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <section class="hero">
   <div class="hero__media">
-    <img src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85"
+    <img width="1920" height="1080" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85"
          alt="A vintage turntable resting on a mossy rock in an alpine meadow at golden hour">
     <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"
            poster="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85">
@@ -606,7 +656,10 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <!-- ═══════════════════════  CATALOGUE  ═══════════════════════ -->
 <section class="sleeve" id="catalogue">
-  <svg class="grooves" viewBox="0 0 600 600" aria-hidden="true"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+  <div class="stage" aria-hidden="true">
+    <svg class="grooves" viewBox="0 0 600 600"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+    <div class="motes"><i style="left:43%;top:22%;--z:-116px;--dur:24.4s;--dl:-1.4s"></i><i style="left:70%;top:15%;--z:-146px;--dur:23.3s;--dl:-18.2s"></i><i style="left:29%;top:7%;--z:-432px;--dur:20.9s;--dl:-1.4s"></i><i style="left:13%;top:73%;--z:-86px;--dur:14.9s;--dl:-11.3s"></i><i style="left:30%;top:83%;--z:122px;--dur:23.3s;--dl:-1.2s"></i><i style="left:76%;top:53%;--z:-470px;--dur:29.6s;--dl:-0.9s"></i><i style="left:19%;top:40%;--z:-91px;--dur:16.3s;--dl:-2.4s"></i><i style="left:41%;top:74%;--z:178px;--dur:16.9s;--dl:-11.6s"></i><i style="left:83%;top:27%;--z:-139px;--dur:15.6s;--dl:-14.2s"></i><i style="left:74%;top:10%;--z:113px;--dur:17.3s;--dl:-13.6s"></i><i style="left:56%;top:43%;--z:-44px;--dur:23.4s;--dl:-9.1s"></i><i style="left:40%;top:34%;--z:-336px;--dur:25.2s;--dl:-4.9s"></i><i style="left:75%;top:41%;--z:17px;--dur:21.9s;--dl:-6.9s"></i><i style="left:59%;top:39%;--z:103px;--dur:29.7s;--dl:-2.4s"></i><i style="left:55%;top:24%;--z:-170px;--dur:16.4s;--dl:-9.8s"></i><i style="left:7%;top:88%;--z:-441px;--dur:26.2s;--dl:-11.5s"></i></div>
+  </div>
   <div class="shell">
     <p class="tag rv">
       <svg class="disc" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
@@ -640,7 +693,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Kauaʻi ʻōʻō</h3>
           <p class="track__where">Alakaʻi plateau, Kauaʻi, Hawaiʻi</p>
           <p class="track__note">The male half of a mating duet. He sings his part, then leaves a gap for the female's answer. The gap is the reason this recording is unbearable — there was no female left to fill it. He was the last of his species, singing to an empty forest.</p>
-          <div class="player" id="p-oo" data-player="oo" data-name="Kauaʻi ʻōʻō">
+          <div class="flipbox" data-flipbox="oo">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-oo" data-player="oo" data-name="Kauaʻi ʻōʻō">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the gap</span>
@@ -649,6 +704,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:3%;height:22px"></div><div class="player__note" style="left:11%;height:32px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>He has called <b data-count>0</b></span><span>Answers <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of the two-note call — not the archival audio. The 1987 original is held by the Cornell Lab of Ornithology.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="oo">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑oo</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>Alakaʻi plateau, Kauaʻi · approx. 22.1°N 159.5°W</dd>
+                <dt>Cause</dt><dd>Introduced mosquitoes carrying avian malaria, moving upslope as the climate warmed, plus habitat clearance and introduced rats and pigs.</dd>
+                <dt>Last confirmed</dt><dd>1987 — the call was recorded; no confirmed sighting after.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Mosquito control above 1,200 m, decades before it was attempted.</p>
+              <button class="case__flip" type="button" data-flip="oo">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -666,7 +736,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Ivory‑billed woodpecker</h3>
           <p class="track__where">Singer Tract, Louisiana</p>
           <p class="track__note">A 1935 expedition hauled a tonne of recording equipment into old‑growth swamp and captured its double knock — two hammer blows on a trunk, a tenth of a second apart — and its flat, nasal call. The forest was logged soon after.</p>
-          <div class="player" id="p-ivory" data-player="ivory" data-name="Ivory‑billed woodpecker">
+          <div class="flipbox" data-flipbox="ivory">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-ivory" data-player="ivory" data-name="Ivory‑billed woodpecker">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the double knock</span>
@@ -675,6 +747,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:36px"></div><div class="player__note" style="left:7%;height:30px"></div><div class="player__note" style="left:44%;height:18px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Knocks <b data-count>0</b></span><span>Confirmed since <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction. The 1935 Cornell Lab recordings are the only widely accepted audio of the species.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="ivory">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑ivory</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>Singer Tract, Madison Parish, Louisiana · approx. 32.0°N 91.3°W</dd>
+                <dt>Cause</dt><dd>Industrial clear-felling of the last great southern bottomland old-growth forest.</dd>
+                <dt>Last confirmed</dt><dd>1944 — the last widely accepted sighting.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Not logging the Singer Tract. Conservationists asked the lumber company directly. It refused.</p>
+              <button class="case__flip" type="button" data-flip="ivory">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -692,7 +779,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Baiji</h3>
           <p class="track__where">Yangtze River, China</p>
           <p class="track__note">The goddess of the Yangtze. River dolphins navigate by sound because the water is too silty to see through — so the last surveys hunted them with hydrophones instead of eyes. In 2006 a six‑week expedition swept the entire river and heard nothing at all.</p>
-          <div class="player" id="p-baiji" data-player="baiji" data-name="Baiji">
+          <div class="flipbox" data-flipbox="baiji">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-baiji" data-player="baiji" data-name="Baiji">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the clicks</span>
@@ -701,6 +790,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:5%;height:16px"></div><div class="player__note" style="left:8%;height:26px"></div><div class="player__note" style="left:11%;height:20px"></div><div class="player__note" style="left:14%;height:30px"></div><div class="player__note" style="left:17%;height:18px"></div><div class="player__note" style="left:46%;height:24px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Click trains <b data-count>0</b></span><span>Detections in 2006 <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of a river‑dolphin click train. The 2006 Yangtze survey recorded no baiji detections.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="baiji">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑baiji</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>Yangtze main channel, China · approx. 30.5°N 114.3°E</dd>
+                <dt>Cause</dt><dd>Bycatch in rolling-hook and electrofishing gear, ship strikes, dam construction and relentless river traffic.</dd>
+                <dt>Last confirmed</dt><dd>2002 — the last confirmed individual. The 2006 survey found none.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Moving survivors into the Tian'e‑Zhou oxbow reserve while enough of them were left to move.</p>
+              <button class="case__flip" type="button" data-flip="baiji">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -718,7 +822,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Rabbs’ fringe‑limbed treefrog</h3>
           <p class="track__where">Central Panama</p>
           <p class="track__note">A chytrid fungus swept Panama faster than anyone could collect survivors. The last known individual, a male kept in Atlanta and nicknamed Toughie, called for years into a room with no other frog in it. He died in 2016 and took the species with him.</p>
-          <div class="player" id="p-frog" data-player="frog" data-name="Rabbs’ fringe‑limbed treefrog">
+          <div class="flipbox" data-flipbox="frog">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-frog" data-player="frog" data-name="Rabbs’ fringe‑limbed treefrog">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the call</span>
@@ -727,6 +833,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:26px"></div><div class="player__note" style="left:16%;height:26px"></div><div class="player__note" style="left:28%;height:26px"></div><div class="player__note" style="left:40%;height:26px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Calls <b data-count>0</b></span><span>Replies <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of the barking call. Amphibians are the most threatened class of vertebrates on Earth.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="frog">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑frog</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>El Valle de Antón, central Panama · approx. 8.6°N 80.1°W</dd>
+                <dt>Cause</dt><dd>Chytrid fungus (Batrachochytrium dendrobatidis), which swept the valley faster than anyone could collect survivors.</dd>
+                <dt>Last confirmed</dt><dd>2016 — the last captive individual died in Atlanta.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Securing a viable breeding group before the fungus arrived in 2006.</p>
+              <button class="case__flip" type="button" data-flip="frog">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -744,7 +865,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Okjökull</h3>
           <p class="track__where">Borgarfjörður, west Iceland</p>
           <p class="track__note">Not an animal — the stage they all stand on. Meltwater, shifting ice, the low structural groan of a body of ice big enough to have a name. In 2014 it stopped being a glacier. A plaque was bolted to the bare rock in 2019, addressed to whoever comes next.</p>
-          <div class="player" id="p-ice" data-player="ice" data-name="Okjökull">
+          <div class="flipbox" data-flipbox="ice">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-ice" data-player="ice" data-name="Okjökull">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the ice</span>
@@ -753,6 +876,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:16%;height:14px"></div><div class="player__note" style="left:38%;height:26px"></div><div class="player__note" style="left:71%;height:12px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Cracks <b data-count>0</b></span><span>Ice remaining <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of a glacial soundscape. Okjökull lost glacier status in 2014; the memorial plaque went up in August 2019.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="ice">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑ice</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>Ok volcano, west Iceland · approx. 64.6°N 20.9°W</dd>
+                <dt>Cause</dt><dd>A warming climate. Nothing more complicated than that.</dd>
+                <dt>Last confirmed</dt><dd>2014 — declared no longer a glacier.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Emissions cuts decades before the plaque went up.</p>
+              <button class="case__flip" type="button" data-flip="ice">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -770,7 +908,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">The flying insects</h3>
           <p class="track__where">Krefeld reserves, Germany</p>
           <p class="track__note">No single species — the layer underneath all the others. Volunteers ran the same malaise traps in the same nature reserves for twenty‑seven years and weighed what they caught. Three quarters of the biomass simply stopped arriving. This is the sound that used to fill a summer field.</p>
-          <div class="player" id="p-insects" data-player="insects" data-name="The flying insects">
+          <div class="flipbox" data-flipbox="insects">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-insects" data-player="insects" data-name="The flying insects">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play the field</span>
@@ -779,6 +919,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:6%;height:18px"></div><div class="player__note" style="left:19%;height:24px"></div><div class="player__note" style="left:33%;height:16px"></div><div class="player__note" style="left:48%;height:22px"></div><div class="player__note" style="left:62%;height:18px"></div><div class="player__note" style="left:77%;height:24px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Chirps <b data-count>0</b></span><span>Percent returning <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction of a field chorus. Hallmann et al. (2017) measured a decline of more than 75% in flying insect biomass over 27 years.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="insects">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑insects</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>63 protected areas, Germany · Krefeld approx. 51.3°N 6.6°E</dd>
+                <dt>Cause</dt><dd>Not established by the study itself. Agricultural intensification, pesticide load and habitat loss are the leading hypotheses.</dd>
+                <dt>Last confirmed</dt><dd>Ongoing — the traps are still running.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Pesticide reduction and uncropped habitat left standing between fields.</p>
+              <button class="case__flip" type="button" data-flip="insects">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -796,7 +951,9 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
           <h3 class="track__name">Vaquita</h3>
           <p class="track__where">Gulf of California, Mexico</p>
           <p class="track__note">The only track on this label that is not finished. Around ten individuals remain, and nobody can see them — the entire census is acoustic. Every year researchers drop hydrophones and count clicks, because the clicks are the last reliable proof the species is still there.</p>
-          <div class="player" id="p-vaquita" data-player="vaquita" data-name="Vaquita">
+          <div class="flipbox" data-flipbox="vaquita">
+            <div class="flip">
+              <div class="flip__face flip__front"><div class="player" id="p-vaquita" data-player="vaquita" data-name="Vaquita">
             <button class="player__btn" type="button" aria-pressed="false">
               <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
               <span>Play what is left</span>
@@ -805,6 +962,21 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
             <div class="player__groove" aria-hidden="true"><div class="player__note" style="left:4%;height:14px"></div><div class="player__note" style="left:6%;height:20px"></div><div class="player__note" style="left:8%;height:16px"></div><div class="player__note" style="left:10%;height:24px"></div><div class="player__note" style="left:12%;height:14px"></div><div class="player__note" style="left:35%;height:18px"></div><div class="player__note" style="left:37%;height:26px"></div><div class="player__note" style="left:39%;height:16px"></div><div class="player__note" style="left:66%;height:20px"></div><div class="player__note" style="left:68%;height:14px"></div><div class="player__head"></div></div>
             <p class="player__meta" aria-hidden="true"><span>Clicks heard <b data-count>0</b></span><span>Time remaining <b class="zero">0</b></span></p>
             <p class="player__disc">Synthesised reconstruction. Real vaquita clicks sit around 139 kHz — far above human hearing; pitched down here so you can hear roughly what the hydrophones do.</p>
+              <button class="case__flip case__flip--open" type="button" data-flip="vaquita">Case file</button>
+          </div></div>
+              <div class="flip__face flip__back">
+            <div class="casefile">
+              <p class="case__h">Case file · REQ‑vaquita</p>
+              <dl class="case__dl">
+                <dt>Last known range</dt><dd>Northern Gulf of California, Mexico · approx. 31.0°N 114.5°W</dd>
+                <dt>Cause</dt><dd>Drowning in illegal gillnets set for totoaba, a fish whose swim bladder is trafficked.</dd>
+                <dt>Last confirmed</dt><dd>Still detected in every survey year to date.</dd>
+              </dl>
+              <p class="case__need"><span>What it would have taken</span>Getting the gillnets out of the refuge. This one is not a mystery. It is enforcement.</p>
+              <button class="case__flip" type="button" data-flip="vaquita">Back to the recording</button>
+            </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="track__meta">
@@ -820,6 +992,10 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <!-- ═══════════════════════  CHORUS SCRUBBER  ═══════════════════════ -->
 <section class="meadow" id="chorus">
+  <div class="stage" aria-hidden="true">
+    <svg class="grooves grooves--left" viewBox="0 0 600 600"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+    <div class="motes"><i style="left:43%;top:22%;--z:-116px;--dur:24.4s;--dl:-1.4s"></i><i style="left:70%;top:15%;--z:-146px;--dur:23.3s;--dl:-18.2s"></i><i style="left:29%;top:7%;--z:-432px;--dur:20.9s;--dl:-1.4s"></i><i style="left:13%;top:73%;--z:-86px;--dur:14.9s;--dl:-11.3s"></i><i style="left:30%;top:83%;--z:122px;--dur:23.3s;--dl:-1.2s"></i><i style="left:76%;top:53%;--z:-470px;--dur:29.6s;--dl:-0.9s"></i><i style="left:19%;top:40%;--z:-91px;--dur:16.3s;--dl:-2.4s"></i><i style="left:41%;top:74%;--z:178px;--dur:16.9s;--dl:-11.6s"></i><i style="left:83%;top:27%;--z:-139px;--dur:15.6s;--dl:-14.2s"></i><i style="left:74%;top:10%;--z:113px;--dur:17.3s;--dl:-13.6s"></i><i style="left:56%;top:43%;--z:-44px;--dur:23.4s;--dl:-9.1s"></i><i style="left:40%;top:34%;--z:-336px;--dur:25.2s;--dl:-4.9s"></i><i style="left:75%;top:41%;--z:17px;--dur:21.9s;--dl:-6.9s"></i><i style="left:59%;top:39%;--z:103px;--dur:29.7s;--dl:-2.4s"></i><i style="left:55%;top:24%;--z:-170px;--dur:16.4s;--dl:-9.8s"></i><i style="left:7%;top:88%;--z:-441px;--dur:26.2s;--dl:-11.5s"></i></div>
+  </div>
   <div class="shell">
     <p class="tag rv">Side B · Drag the year</p>
     <h2 class="sec-title t3d"><span class="tline"><span>This is a dawn chorus.</span></span><span class="tline"><span>Now <em>take away fifty years.</em></span></span></h2>
@@ -854,6 +1030,10 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <!-- ═══════════════════════  EVIDENCE  ═══════════════════════ -->
 <section class="sleeve" id="evidence">
+  <div class="stage" aria-hidden="true">
+    <svg class="grooves" viewBox="0 0 600 600"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+    <div class="motes"><i style="left:43%;top:22%;--z:-116px;--dur:24.4s;--dl:-1.4s"></i><i style="left:70%;top:15%;--z:-146px;--dur:23.3s;--dl:-18.2s"></i><i style="left:29%;top:7%;--z:-432px;--dur:20.9s;--dl:-1.4s"></i><i style="left:13%;top:73%;--z:-86px;--dur:14.9s;--dl:-11.3s"></i><i style="left:30%;top:83%;--z:122px;--dur:23.3s;--dl:-1.2s"></i><i style="left:76%;top:53%;--z:-470px;--dur:29.6s;--dl:-0.9s"></i><i style="left:19%;top:40%;--z:-91px;--dur:16.3s;--dl:-2.4s"></i><i style="left:41%;top:74%;--z:178px;--dur:16.9s;--dl:-11.6s"></i><i style="left:83%;top:27%;--z:-139px;--dur:15.6s;--dl:-14.2s"></i><i style="left:74%;top:10%;--z:113px;--dur:17.3s;--dl:-13.6s"></i><i style="left:56%;top:43%;--z:-44px;--dur:23.4s;--dl:-9.1s"></i><i style="left:40%;top:34%;--z:-336px;--dur:25.2s;--dl:-4.9s"></i><i style="left:75%;top:41%;--z:17px;--dur:21.9s;--dl:-6.9s"></i><i style="left:59%;top:39%;--z:103px;--dur:29.7s;--dl:-2.4s"></i><i style="left:55%;top:24%;--z:-170px;--dur:16.4s;--dl:-9.8s"></i><i style="left:7%;top:88%;--z:-441px;--dur:26.2s;--dl:-11.5s"></i></div>
+  </div>
   <div class="shell">
     <p class="tag rv">The volume knob is turning left</p>
     <h2 class="sec-title t3d"><span class="tline"><span>This is not a handful of rare birds.</span></span><span class="tline"><span>It is the <em>background noise of the planet.</em></span></span></h2>
@@ -905,7 +1085,10 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <!-- ═══════════════════════  PLAYBACK / HOPE  ═══════════════════════ -->
 <section class="meadow" id="playback">
-  <svg class="grooves grooves--left" viewBox="0 0 600 600" aria-hidden="true"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+  <div class="stage" aria-hidden="true">
+    <svg class="grooves grooves--left" viewBox="0 0 600 600"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+    <div class="motes"><i style="left:43%;top:22%;--z:-116px;--dur:24.4s;--dl:-1.4s"></i><i style="left:70%;top:15%;--z:-146px;--dur:23.3s;--dl:-18.2s"></i><i style="left:29%;top:7%;--z:-432px;--dur:20.9s;--dl:-1.4s"></i><i style="left:13%;top:73%;--z:-86px;--dur:14.9s;--dl:-11.3s"></i><i style="left:30%;top:83%;--z:122px;--dur:23.3s;--dl:-1.2s"></i><i style="left:76%;top:53%;--z:-470px;--dur:29.6s;--dl:-0.9s"></i><i style="left:19%;top:40%;--z:-91px;--dur:16.3s;--dl:-2.4s"></i><i style="left:41%;top:74%;--z:178px;--dur:16.9s;--dl:-11.6s"></i><i style="left:83%;top:27%;--z:-139px;--dur:15.6s;--dl:-14.2s"></i><i style="left:74%;top:10%;--z:113px;--dur:17.3s;--dl:-13.6s"></i><i style="left:56%;top:43%;--z:-44px;--dur:23.4s;--dl:-9.1s"></i><i style="left:40%;top:34%;--z:-336px;--dur:25.2s;--dl:-4.9s"></i><i style="left:75%;top:41%;--z:17px;--dur:21.9s;--dl:-6.9s"></i><i style="left:59%;top:39%;--z:103px;--dur:29.7s;--dl:-2.4s"></i><i style="left:55%;top:24%;--z:-170px;--dur:16.4s;--dl:-9.8s"></i><i style="left:7%;top:88%;--z:-441px;--dur:26.2s;--dl:-11.5s"></i></div>
+  </div>
   <div class="shell">
     <p class="tag rv">The part nobody expects</p>
     <h2 class="sec-title t3d"><span class="tline"><span>Here is the strangest thing</span></span><span class="tline"><span>we have learned: <em>playback works.</em></span></span></h2>
@@ -917,6 +1100,10 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
 
 <!-- ═══════════════════════  ACT  ═══════════════════════ -->
 <section class="sleeve" id="act">
+  <div class="stage" aria-hidden="true">
+    <svg class="grooves grooves--left" viewBox="0 0 600 600"><circle cx="300" cy="300" r="40" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="53" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="66" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="79" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="92" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="105" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="118" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="131" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="144" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="157" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="170" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="183" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="196" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="209" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="222" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="235" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="248" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="261" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="274" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><circle cx="300" cy="300" r="287" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/><circle cx="300" cy="300" r="7" fill="currentColor" opacity=".25"/></svg>
+    <div class="motes"><i style="left:43%;top:22%;--z:-116px;--dur:24.4s;--dl:-1.4s"></i><i style="left:70%;top:15%;--z:-146px;--dur:23.3s;--dl:-18.2s"></i><i style="left:29%;top:7%;--z:-432px;--dur:20.9s;--dl:-1.4s"></i><i style="left:13%;top:73%;--z:-86px;--dur:14.9s;--dl:-11.3s"></i><i style="left:30%;top:83%;--z:122px;--dur:23.3s;--dl:-1.2s"></i><i style="left:76%;top:53%;--z:-470px;--dur:29.6s;--dl:-0.9s"></i><i style="left:19%;top:40%;--z:-91px;--dur:16.3s;--dl:-2.4s"></i><i style="left:41%;top:74%;--z:178px;--dur:16.9s;--dl:-11.6s"></i><i style="left:83%;top:27%;--z:-139px;--dur:15.6s;--dl:-14.2s"></i><i style="left:74%;top:10%;--z:113px;--dur:17.3s;--dl:-13.6s"></i><i style="left:56%;top:43%;--z:-44px;--dur:23.4s;--dl:-9.1s"></i><i style="left:40%;top:34%;--z:-336px;--dur:25.2s;--dl:-4.9s"></i><i style="left:75%;top:41%;--z:17px;--dur:21.9s;--dl:-6.9s"></i><i style="left:59%;top:39%;--z:103px;--dur:29.7s;--dl:-2.4s"></i><i style="left:55%;top:24%;--z:-170px;--dur:16.4s;--dl:-9.8s"></i><i style="left:7%;top:88%;--z:-441px;--dur:26.2s;--dl:-11.5s"></i></div>
+  </div>
   <div class="shell">
     <p class="tag rv">What actually moves the needle</p>
     <h2 class="sec-title t3d"><span class="tline"><span>Three things. Pick one today.</span></span></h2>
@@ -1046,9 +1233,6 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
     arm.style.transform = 'rotate(' + (-22 + p * 30).toFixed(2) + 'deg)';
     deck.classList.toggle('on', window.pageYOffset > window.innerHeight * .6);
   }
-  window.addEventListener('scroll', onScroll, { passive:true });
-  window.addEventListener('resize', onScroll, { passive:true });
-  onScroll();
 
   /* ─────────────── count-up figures ─────────────── */
   var ups = document.querySelectorAll('[data-countup]');
@@ -1572,9 +1756,6 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
       if (lifted) arm.style.transform = 'rotate(-30deg)';
     }
   }
-  window.addEventListener('scroll', onHush, { passive:true });
-  window.addEventListener('resize', onHush, { passive:true });
-  onHush();
 
   /* ═══════════════ catalogue filters ═══════════════ */
   var filterBar = document.getElementById('filters');
@@ -1615,17 +1796,12 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
     var max = document.documentElement.scrollHeight - window.innerHeight;
     var p = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
     mini.classList.toggle('on', window.pageYOffset > window.innerHeight * .85);
-    if (miniBar) miniBar.style.width = (p * 100).toFixed(2) + '%';
+    if (miniBar) miniBar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
     if (miniMenu){
       miniMenu.textContent = open ? 'Close' : 'Menu';
       miniMenu.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
-  window.addEventListener('scroll', onMini, { passive:true });
-  window.addEventListener('resize', onMini, { passive:true });
-  burger.addEventListener('click', onMini);
-  if (miniMenu) miniMenu.addEventListener('click', onMini);
-  onMini();
 
   /* ═══════════════ 3D: masked title reveals ═══════════════ */
   var t3d = document.querySelectorAll('.t3d');
@@ -1664,6 +1840,93 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
       });
     });
   }
+
+  /* ═══════════════ 3D: case-file flip ═══════════════ */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-flip]'), function(btn){
+    btn.addEventListener('click', function(){
+      var box = document.querySelector('[data-flipbox="' + btn.getAttribute('data-flip') + '"]');
+      if (!box) return;
+      var flip = box.querySelector('.flip');
+      var now = !flip.classList.contains('flipped');
+      flip.classList.toggle('flipped', now);
+      // a face turned away from the viewer must leave the tab order
+      Array.prototype.forEach.call(box.querySelectorAll('.flip__front button, .flip__front a'), function(el){
+        el.tabIndex = now ? -1 : 0;
+      });
+      Array.prototype.forEach.call(box.querySelectorAll('.flip__back button, .flip__back a'), function(el){
+        el.tabIndex = now ? 0 : -1;
+      });
+      box.querySelector(now ? '.flip__back .case__flip' : '.flip__front .case__flip').focus();
+      // never leave audio running on a hidden face
+      var pl = box.querySelector('[data-player]');
+      if (now && pl){
+        var id = pl.getAttribute('data-player');
+        if (registry[id] && registry[id].playing) registry[id].stop();
+      }
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.flip__back button, .flip__back a'), function(el){ el.tabIndex = -1; });
+
+  /* ═══════════════ 3D: tracks rotate as they pass the viewport ═══════════════ */
+  var rows = document.querySelectorAll('.track');
+  var stages = document.querySelectorAll('.stage');
+
+  /* ═══════════════ one scroll pass, rAF-throttled ═══════════════
+     Three separate listeners each read layout on every scroll event, which
+     thrashes the main thread. One batched pass keeps it inside a frame.   */
+  var ticking = false;
+  function frame(){
+    ticking = false;
+    var vh = window.innerHeight;
+    onScroll(); onHush(); onMini();
+    if (!reduce){
+      for (var i = 0; i < rows.length; i++){
+        var r = rows[i].getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) continue;
+        // key off the row's TOP edge, so tall rows still sweep through flat
+        // rather than saturating: +1 entering from below, 0 at reading height, -1 leaving
+        var k = Math.max(-1, Math.min(1, (r.top / vh - .32) * 1.8));
+        rows[i].style.transform = 'perspective(1400px) rotateX(' + (k * 7).toFixed(2) +
+          'deg) translateZ(' + (-Math.abs(k) * 60).toFixed(1) + 'px)';
+      }
+      for (var s = 0; s < stages.length; s++){
+        var sr = stages[s].getBoundingClientRect();
+        if (sr.bottom < 0 || sr.top > vh) continue;
+        var q = (sr.top / vh);
+        stages[s].style.perspectiveOrigin = '50% ' + (38 + q * 22).toFixed(1) + '%';
+      }
+    }
+  }
+  function onAnyScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', onAnyScroll, { passive:true });
+  window.addEventListener('resize', onAnyScroll, { passive:true });
+  burger.addEventListener('click', onAnyScroll);
+  if (miniMenu) miniMenu.addEventListener('click', onAnyScroll);
+  frame();
+
+  /* ═══════════════ flip faces share the taller face's height ═══════════════
+     The back is absolutely positioned, so without this its content spills
+     out of the card whenever the case file runs longer than the player.   */
+  var flipBoxes = document.querySelectorAll('.flipbox');
+  function sizeFlips(){
+    Array.prototype.forEach.call(flipBoxes, function(box){
+      var flip = box.querySelector('.flip');
+      var front = box.querySelector('.flip__front');
+      var back = box.querySelector('.flip__back');
+      if (!flip || !front || !back) return;
+      flip.style.minHeight = '';
+      var h = Math.max(front.offsetHeight, back.scrollHeight);
+      flip.style.minHeight = h + 'px';
+    });
+  }
+  sizeFlips();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeFlips).catch(function(){});
+  var sizeT = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(sizeT);
+    sizeT = setTimeout(sizeFlips, 180);
+  }, { passive:true });
+  window.addEventListener('load', sizeFlips);
 
 })();
 </script>

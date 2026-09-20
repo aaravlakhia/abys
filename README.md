@@ -77,6 +77,33 @@ The hero's entrance animation is the language for the entire page, extended into
 Every transform carries its own `perspective()` so depth never depends on an ancestor's
 stacking context, and the whole system is neutralised under `prefers-reduced-motion`.
 
+## Case files
+
+Every track flips. A **Case file** button rotates the player card 180° in 3D to reveal
+the species' last known range (approximate coordinates), what killed it, when it was last
+confirmed, and a "what it would have taken" line. Faces turned away from the viewer are
+pulled out of the tab order, focus moves with the flip, and audio stops rather than
+playing from a hidden face.
+
+Two of those lines are the reason the section exists: the Singer Tract case file reads
+*"Conservationists asked the lumber company directly. It refused."* The vaquita's reads
+*"This one is not a mystery. It is enforcement."*
+
+## Design review
+
+Reviewed against the [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)
+guideline set. Findings it surfaced, and what changed:
+
+| Finding | Fix |
+|---|---|
+| Transform performance — never animate `width` | Scroll progress bar moved to `transform: scaleX()` |
+| `reduce-reflows` / 16 ms frame budget | Three independent scroll listeners collapsed into one rAF-throttled pass |
+| `focus-not-obscured` (WCAG 2.2 AA) — sticky UI must not hide the focused control | `scroll-padding-top: 88px` on `html` |
+| `web-target-size` (WCAG 2.2 AA) — 24×24 CSS px minimum | Mini-nav logo was 69×18 and the "Act" link 20 px wide; both now clear 24×44 |
+| `image-dimension` / CLS | Hero image carries explicit `width`/`height` |
+| `tap-delay` | `touch-action: manipulation` on interactive elements |
+| Motion sensitivity — parallax must not be forced | Every 3D effect neutralised under `prefers-reduced-motion` |
+
 ## Everything else
 
 - All audio is **synthesised in-browser** with the Web Audio API — oscillators, filtered
