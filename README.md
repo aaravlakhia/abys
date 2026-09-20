@@ -56,6 +56,27 @@ After the last section the page does what a record does: it runs out. A tall sti
 section fades through four lines while a groove ring spirals inward to nothing, any
 playing audio ramps to silence, and the tonearm lifts off the record.
 
+## The 3D motion system
+
+The hero's entrance animation is the language for the entire page, extended into real 3D:
+
+- **Masked line reveals.** Every section title uses the same double-wrapped mask as the
+  headline, but the inner span rotates up out of it in 3D (`rotateX(-64deg)` → flat),
+  staggered line by line.
+- **Depth reveals.** Everything that scrolls in arrives from `translateZ(-120px)
+  rotateX(-11deg)` rather than a flat slide, so content rises *out of* the page.
+- **Cursor tilt.** Player cards, action cards and the calculator hold a live tilt under
+  the pointer (rAF-throttled, `hover: hover` only).
+- **The chorus has depth.** Living voices sit forward at `translateZ(+18px)`; dead ones
+  fall back to `-30px`. As you drag toward 2026 the chorus literally recedes from you.
+- **Records exist in space.** The decorative groove rings lie flat at `rotateX(66deg)`
+  and rotate; the corner deck is a turntable seen at an angle.
+- **The run-out groove is a tunnel** — six concentric rings at staggered depths flying
+  past the viewer as the needle runs in.
+
+Every transform carries its own `perspective()` so depth never depends on an ancestor's
+stacking context, and the whole system is neutralised under `prefers-reduced-motion`.
+
 ## Everything else
 
 - All audio is **synthesised in-browser** with the Web Audio API — oscillators, filtered
