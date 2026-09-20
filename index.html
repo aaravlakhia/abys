@@ -293,6 +293,32 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
 .rv.in{opacity:1;transform:none}
 
+
+/* ══════════════════════  SHARE CARD  ══════════════════════ */
+.card{margin-top:2.2rem;padding-top:1.8rem;border-top:1px solid rgba(219,230,238,.16)}
+.card__h{font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;opacity:.55;margin:0 0 1.1rem}
+.card canvas{width:100%;max-width:560px;height:auto;display:block;border-radius:10px;border:1px solid rgba(219,230,238,.18)}
+.card__row{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-top:1.1rem}
+.card__note{font-size:.72rem;line-height:1.6;opacity:.42;margin:.9rem 0 0;max-width:52ch}
+
+/* ══════════════════════  RUN-OUT GROOVE  ══════════════════════ */
+.hush{position:relative;height:300vh;background:var(--ink);color:var(--sky)}
+.hush__stick{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hush__ring{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none}
+.hush__ring i{display:block;width:74vmin;height:74vmin;border-radius:50%;border:1px solid rgba(219,230,238,.5);transform-origin:center;will-change:transform}
+.hush__lines{position:relative;z-index:2;width:100%;height:100%}
+.hush__l{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(88vw,22ch);margin:0;text-align:center;
+  font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(1.7rem,4.4vw,3.4rem);line-height:1.14;text-wrap:balance;
+  opacity:0;transition:opacity .75s var(--ease);
+}
+.hush__l.on{opacity:1}
+.hush__l.last{color:var(--sky)}
+.hush__tag{position:absolute;left:50%;bottom:2rem;transform:translateX(-50%);z-index:2;margin:0;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;opacity:.3}
+.deck.lift .deck__disc{animation-play-state:paused}
+
 /* ══════════════════════════  RESPONSIVE  ══════════════════════════ */
 @media (max-width:900px){
   .nav__links{display:none}
@@ -307,6 +333,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .figs,.acts,.chorus__grid{grid-template-columns:1fr}
   .deck{display:none}
   .np{left:12px;right:12px;bottom:12px;justify-content:space-between}
+  .hush{height:240vh}
 }
 @media (max-width:900px) and (orientation:portrait){
   .hero__media::before{display:block}
@@ -339,6 +366,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   .rv{opacity:1;transform:none}
   .scroll-cue{opacity:1}
   .deck__disc,.disc{animation:none}
+  .hush{height:auto}
+  .hush__stick{position:static;height:auto;padding:clamp(4rem,10vw,7rem) 0}
+  .hush__l{position:static;transform:none;opacity:1;margin:0 auto 1.5rem;width:auto;max-width:24ch}
+  .hush__ring,.hush__tag{display:none}
 }
 </style>
 </head>
@@ -560,6 +591,22 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       </p>
       <div class="life__out" id="lifeOut" role="status" aria-live="polite"></div>
       <p class="life__note">Bird figure is a straight-line estimate from the measured 1970–present total, not a year-by-year measurement. It is here to give the number a human scale, not to be cited.</p>
+
+      <div class="card">
+        <p class="card__h">Make it shareable</p>
+        <canvas id="cardCanvas" width="1200" height="630" role="img"
+                aria-label="A share card showing how many birds have been lost since your birth year"></canvas>
+        <div class="card__row">
+          <button class="player__btn" id="cardDl" type="button">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+              <path d="M7 1v8M3.6 6.2L7 9.6l3.4-3.4M1.6 12.4h10.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Download your card</span>
+          </button>
+          <button class="chip" id="cardCopy" type="button"><span>Copy the line</span></button>
+        </div>
+        <p class="card__note">Generated in your browser from the year above — nothing is uploaded. Post it, or set it as this page's preview image when you publish.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -602,6 +649,19 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <a class="btn-ghost" href="[YOUR SHARE LINK]">Send this to one person</a>
     </div>
     <p class="fill">Placeholders to fill in: [YOUR PLEDGE OR DONATE URL] · [YOUR SHARE LINK] · [PARTNER ORGANISATION]</p>
+  </div>
+</section>
+
+<section class="hush" id="hush" aria-label="The run-out groove">
+  <div class="hush__stick">
+    <div class="hush__ring" aria-hidden="true"><i id="hushRing"></i></div>
+    <div class="hush__lines">
+      <p class="hush__l">Every record ends the same way.</p>
+      <p class="hush__l">The needle keeps moving.</p>
+      <p class="hush__l">There is just nothing left in the groove.</p>
+      <p class="hush__l last">So don't let this be the recording.</p>
+    </div>
+    <p class="hush__tag" aria-hidden="true">Run-out groove</p>
   </div>
 </section>
 
@@ -1016,6 +1076,140 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
     applyYear(Y0);
     if (cPlay){ cPlay.disabled = true; cPlay.querySelector('span').textContent = 'Audio unsupported'; }
   }
+  /* ═══════════════ share card, drawn from your own year ═══════════════ */
+  var cv = document.getElementById('cardCanvas');
+  function wrapText(c, text, maxW){
+    var words = text.split(' '), out = [], cur = '';
+    for (var i = 0; i < words.length; i++){
+      var t = cur ? cur + ' ' + words[i] : words[i];
+      if (c.measureText(t).width > maxW && cur){ out.push(cur); cur = words[i]; }
+      else cur = t;
+    }
+    if (cur) out.push(cur);
+    return out;
+  }
+  function cardLine(){
+    var y = parseInt(birth.value, 10);
+    if (isNaN(y) || y < 1900 || y > YN) y = 2000;
+    var from = Math.max(y, Y0);
+    return { y:y, lost: fmt(LOST * (YN - from) / (YN - Y0)) };
+  }
+  function drawCard(){
+    if (!cv || !cv.getContext) return;
+    var c = cv.getContext('2d'), W = 1200, H = 630;
+    var d = cardLine();
+    c.clearRect(0,0,W,H);
+    c.fillStyle = '#0b0b0c'; c.fillRect(0,0,W,H);
+
+    // run-out grooves
+    c.save();
+    c.strokeStyle = 'rgba(219,230,238,.14)'; c.lineWidth = 1;
+    for (var r = 70; r <= 520; r += 22){ c.beginPath(); c.arc(1035, 315, r, 0, Math.PI*2); c.stroke(); }
+    c.fillStyle = 'rgba(232,112,90,.75)'; c.beginPath(); c.arc(1035, 315, 6, 0, Math.PI*2); c.fill();
+    c.restore();
+
+    try { c.letterSpacing = '0px'; } catch(e){}
+    c.textBaseline = 'alphabetic';
+
+    c.fillStyle = '#dbe6ee';
+    c.font = '700 50px "UnifrakturCook", serif';
+    c.fillText('Requiem', 80, 106);
+
+    try { c.letterSpacing = '4px'; } catch(e){}
+    c.fillStyle = 'rgba(219,230,238,.5)';
+    c.font = '500 19px "Instrument Sans", sans-serif';
+    c.fillText(('Since I was born in ' + d.y).toUpperCase(), 80, 216);
+    try { c.letterSpacing = '0px'; } catch(e){}
+
+    c.fillStyle = '#e8705a';
+    c.font = '400 108px "Instrument Serif", Georgia, serif';
+    c.fillText(d.lost, 80, 330);
+
+    c.fillStyle = '#dbe6ee';
+    c.font = '400 40px "Instrument Serif", Georgia, serif';
+    var body = wrapText(c, 'breeding birds have vanished from North America.', 620);
+    for (var i = 0; i < body.length; i++) c.fillText(body[i], 80, 392 + i * 50);
+
+    var tail = 392 + body.length * 50 + 18;
+    if (d.y > 1987){
+      c.fillStyle = 'rgba(219,230,238,.62)';
+      c.font = '400 27px "Instrument Sans", sans-serif';
+      var l2 = wrapText(c, 'I have never heard a Kaua\u02BBi \u02BB\u014D\u02BB\u014D, and I never will.', 620);
+      for (var k = 0; k < l2.length; k++) c.fillText(l2[k], 80, tail + k * 36);
+    }
+
+    c.strokeStyle = 'rgba(219,230,238,.18)'; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(80, 548); c.lineTo(700, 548); c.stroke();
+    try { c.letterSpacing = '3px'; } catch(e){}
+    c.fillStyle = 'rgba(219,230,238,.45)';
+    c.font = '500 17px "Instrument Sans", sans-serif';
+    c.fillText('THE WORLD IS GOING QUIET \u00B7 PRESS PLAY WHILE YOU CAN', 80, 586);
+    try { c.letterSpacing = '0px'; } catch(e){}
+  }
+  if (cv){
+    drawCard();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawCard).catch(function(){});
+    birth.addEventListener('input', drawCard);
+    document.getElementById('cardDl').addEventListener('click', function(){
+      if (!cv.toBlob){ return; }
+      cv.toBlob(function(blob){
+        if (!blob) return;
+        var url = URL.createObjectURL(blob), a = document.createElement('a');
+        a.href = url; a.download = 'requiem-' + cardLine().y + '.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      }, 'image/png');
+    });
+    var copyBtn = document.getElementById('cardCopy');
+    copyBtn.addEventListener('click', function(){
+      var d = cardLine();
+      var txt = 'Since I was born in ' + d.y + ', roughly ' + d.lost +
+                ' breeding birds have vanished from North America.';
+      var done = function(){
+        var s = copyBtn.querySelector('span'), old = s.textContent;
+        s.textContent = 'Copied';
+        setTimeout(function(){ s.textContent = old; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(done).catch(function(){});
+      }
+    });
+  }
+
+  /* ═══════════════ the run-out groove: the page goes quiet ═══════════════ */
+  var hush = document.getElementById('hush');
+  var hLines = Array.prototype.slice.call(document.querySelectorAll('.hush__l'));
+  var hRing = document.getElementById('hushRing');
+  function onHush(){
+    if (!hush || !hLines.length) return;
+    var top = hush.getBoundingClientRect().top;
+    var span = hush.offsetHeight - window.innerHeight;
+    var p = span > 0 ? Math.min(1, Math.max(0, -top / span)) : 0;
+    var inside = top < window.innerHeight && top > -hush.offsetHeight;
+
+    if (!reduce){
+      var idx = Math.min(hLines.length - 1, Math.floor(p * hLines.length * 0.999));
+      hLines.forEach(function(el, i){ el.classList.toggle('on', inside && i === idx); });
+      if (hRing){
+        hRing.style.transform = 'scale(' + (1 - p * .94).toFixed(3) + ')';
+        hRing.style.opacity = (.34 * (1 - p * .8)).toFixed(3);
+      }
+    }
+    // everything still playing fades out as the needle runs in
+    if (actx && master){
+      try { master.gain.setTargetAtTime(.85 * (1 - p * .97), actx.currentTime, .15); } catch(e){}
+    }
+    // lift the tonearm once the record is over
+    if (deck){
+      var lifted = inside && p > .8;
+      deck.classList.toggle('lift', lifted);
+      if (lifted) arm.style.transform = 'rotate(-30deg)';
+    }
+  }
+  window.addEventListener('scroll', onHush, { passive:true });
+  window.addEventListener('resize', onHush, { passive:true });
+  onHush();
+
 })();
 </script>
 </body>

@@ -25,9 +25,17 @@ drop out of the generated mix). Scaled to the measured ~29% decline in North Ame
 breeding birds. `1970` / `Today` buttons allow instant A/B, which is where the contrast
 actually lands.
 
-**3. "In your lifetime."**
+**3. "In your lifetime" + a personal share card.**
 Enter a birth year and the page states how many birds have vanished since — and, if you
-were born after 1987, that you have never heard a Kauaʻi ʻōʻō and never will.
+were born after 1987, that you have never heard a Kauaʻi ʻōʻō and never will. That result
+is then rendered to a 1200×630 share card on a `<canvas>`, generated entirely in-browser
+and downloadable as a PNG. Nothing is uploaded. Every visitor's card is different, which
+is the point: it makes the statistic personal before it is shared.
+
+**4. The run-out groove.**
+After the last section the page does what a record does: it runs out. A tall sticky
+section fades through four lines while a groove ring spirals inward to nothing, any
+playing audio ramps to silence, and the tonearm lifts off the record.
 
 ## Everything else
 
