@@ -69,9 +69,12 @@ The hero's entrance animation is the language for the entire page, extended into
   the pointer (rAF-throttled, `hover: hover` only).
 - **The chorus has depth.** Living voices sit forward at `translateZ(+18px)`; dead ones
   fall back to `-30px`. As you drag toward 2026 the chorus literally recedes from you.
-- **Every section is set inside the opening frame.** The hero's own poster is the deep
-  ground of each section, pushed to `translateZ(-620px)` and thrown far out of focus, so
-  the whole page sits in the same meadow the film opens on.
+- **The opening footage runs under the entire page.** Not a still — the same video, on a
+  single fixed layer at `translateZ(-260px)`, blurred and parallaxing with scroll. One
+  element, one decode; each section lays its own ground colour over it so the light/dark
+  rhythm survives while the film keeps playing underneath all of it. It pauses whenever
+  the hero is on screen, so two copies never decode at once, and it is dropped entirely
+  under Data Saver or reduced-motion.
 - **A record with real thickness.** Twelve faces stacked in Z, a fine groove pattern, a
   warm centre label, a spindle hole, and a specular sweep that counter-rotates so the
   light reads as fixed in the room while the disc turns under it. One per section, each

@@ -301,18 +301,25 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   position:fixed;inset:0;z-index:44;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-.sleeve{background:radial-gradient(130% 90% at 50% 0%, #15161a 0%, #0e0e10 42%, #0b0b0c 72%)}
-.meadow{background:radial-gradient(130% 90% at 50% 0%, #e9f0f6 0%, #e1eaf1 40%, #dbe6ee 75%)}
+.sleeve{background:transparent;color:var(--sky)}
+.meadow{background:transparent;color:var(--ink)}
 section.sleeve,section.meadow{position:relative;overflow:clip}
-/* the opening frame itself, pushed far back and thrown out of focus, so every
-   section sits inside the same meadow the hero opens on */
-.stage__sky{
-  position:absolute;inset:-14%;
-  background:var(--poster) center 38%/cover no-repeat;
-  transform:translateZ(-620px) scale(2.1);
+/* THE OPENING FOOTAGE, RUNNING UNDER THE WHOLE PAGE.
+   One fixed element, one decode - not a copy per section. Each section
+   lays its own ground colour over it, so the light/dark rhythm survives
+   while the same film keeps playing underneath all of it. */
+.world{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;perspective:900px}
+.world video{
+  position:absolute;left:-12%;top:-12%;width:124%;height:124%;
+  object-fit:cover;object-position:center 56%;display:block;
+  transform:translateZ(-260px) scale(1.42);
+  opacity:0;transition:opacity 1.8s ease;
 }
-.sleeve .stage__sky{filter:blur(54px) saturate(.75) brightness(.5);opacity:.6}
-.meadow .stage__sky{filter:blur(54px) saturate(.6) brightness(1.18);opacity:.45}
+.world video.is-ready{opacity:1}
+.stage__tint{position:absolute;inset:0;z-index:1}
+.sleeve .stage__tint{background:rgba(11,11,12,.80);backdrop-filter:blur(34px) saturate(.7) brightness(.6);-webkit-backdrop-filter:blur(34px) saturate(.7) brightness(.6)}
+.meadow .stage__tint{background:rgba(219,230,238,.84);backdrop-filter:blur(34px) saturate(.6) brightness(1.15);-webkit-backdrop-filter:blur(34px) saturate(.6) brightness(1.15)}
+.stage__vp{z-index:2}
 .stage__scrim{position:absolute;inset:0;z-index:3;pointer-events:none}
 .sleeve .stage__scrim{background:linear-gradient(90deg, rgba(11,11,12,.96) 0%, rgba(11,11,12,.9) 46%, rgba(11,11,12,.66) 74%, rgba(11,11,12,.34) 100%)}
 .meadow .stage__scrim{background:linear-gradient(90deg, rgba(219,230,238,.96) 0%, rgba(219,230,238,.9) 46%, rgba(219,230,238,.68) 74%, rgba(219,230,238,.38) 100%)}
@@ -491,7 +498,7 @@ section[id],.track,.life,#tracks{scroll-margin-top:76px}
   .tilt{transform:none !important}
   .voice,.voice.lit,.voice.lit.sing{transform:none}
   .vinyl__body,.vinyl__sheen{animation:none}
-  .stage__sky{transform:none}
+  .world video{transform:none}
   .deck__disc{transform:none;animation:none}
   .hush__ring i{display:none}
   .hush__l,.hush__l.on{transform:translate(-50%,-50%)}
@@ -638,6 +645,12 @@ button,a,input,summary{touch-action:manipulation}
 <body>
 <a class="skip" href="#catalogue">Skip to the archive</a>
 
+<div class="world" aria-hidden="true">
+  <video id="worldVideo" muted loop playsinline preload="auto" poster="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260908_125738_eb584080-9f98-489e-adb2-014760aa34da.mp4" type="video/mp4">
+  </video>
+</div>
+
 <div class="grain" aria-hidden="true"></div>
 
 <div class="mini" id="mini">
@@ -706,8 +719,8 @@ button,a,input,summary{touch-action:manipulation}
 <!-- ═══════════════════════  CATALOGUE  ═══════════════════════ -->
 <section class="sleeve" id="catalogue">
   <div class="stage" aria-hidden="true">
+    <div class="stage__tint"></div>
     <div class="stage__vp">
-      <div class="stage__sky"></div>
       <div class="vinylwrap">
         <div class="vinyl"><div class="vinyl__body"><span class="vinyl__edge" style="--i:1"></span><span class="vinyl__edge" style="--i:2"></span><span class="vinyl__edge" style="--i:3"></span><span class="vinyl__edge" style="--i:4"></span><span class="vinyl__edge" style="--i:5"></span><span class="vinyl__edge" style="--i:6"></span><span class="vinyl__edge" style="--i:7"></span><span class="vinyl__edge" style="--i:8"></span><span class="vinyl__edge" style="--i:9"></span><span class="vinyl__edge" style="--i:10"></span><span class="vinyl__edge" style="--i:11"></span><span class="vinyl__edge" style="--i:12"></span><div class="vinyl__face"><div class="vinyl__sheen"></div><div class="vinyl__label"></div><div class="vinyl__spindle"></div></div></div></div>
       </div>
@@ -1048,8 +1061,8 @@ button,a,input,summary{touch-action:manipulation}
 <!-- ═══════════════════════  CHORUS SCRUBBER  ═══════════════════════ -->
 <section class="meadow" id="chorus">
   <div class="stage" aria-hidden="true">
+    <div class="stage__tint"></div>
     <div class="stage__vp">
-      <div class="stage__sky"></div>
       <div class="vinylwrap">
         <div class="vinyl"><div class="vinyl__body"><span class="vinyl__edge" style="--i:1"></span><span class="vinyl__edge" style="--i:2"></span><span class="vinyl__edge" style="--i:3"></span><span class="vinyl__edge" style="--i:4"></span><span class="vinyl__edge" style="--i:5"></span><span class="vinyl__edge" style="--i:6"></span><span class="vinyl__edge" style="--i:7"></span><span class="vinyl__edge" style="--i:8"></span><span class="vinyl__edge" style="--i:9"></span><span class="vinyl__edge" style="--i:10"></span><span class="vinyl__edge" style="--i:11"></span><span class="vinyl__edge" style="--i:12"></span><div class="vinyl__face"><div class="vinyl__sheen"></div><div class="vinyl__label"></div><div class="vinyl__spindle"></div></div></div></div>
       </div>
@@ -1092,8 +1105,8 @@ button,a,input,summary{touch-action:manipulation}
 <!-- ═══════════════════════  EVIDENCE  ═══════════════════════ -->
 <section class="sleeve" id="evidence">
   <div class="stage" aria-hidden="true">
+    <div class="stage__tint"></div>
     <div class="stage__vp">
-      <div class="stage__sky"></div>
       <div class="vinylwrap">
         <div class="vinyl"><div class="vinyl__body"><span class="vinyl__edge" style="--i:1"></span><span class="vinyl__edge" style="--i:2"></span><span class="vinyl__edge" style="--i:3"></span><span class="vinyl__edge" style="--i:4"></span><span class="vinyl__edge" style="--i:5"></span><span class="vinyl__edge" style="--i:6"></span><span class="vinyl__edge" style="--i:7"></span><span class="vinyl__edge" style="--i:8"></span><span class="vinyl__edge" style="--i:9"></span><span class="vinyl__edge" style="--i:10"></span><span class="vinyl__edge" style="--i:11"></span><span class="vinyl__edge" style="--i:12"></span><div class="vinyl__face"><div class="vinyl__sheen"></div><div class="vinyl__label"></div><div class="vinyl__spindle"></div></div></div></div>
       </div>
@@ -1153,8 +1166,8 @@ button,a,input,summary{touch-action:manipulation}
 <!-- ═══════════════════════  PLAYBACK / HOPE  ═══════════════════════ -->
 <section class="meadow" id="playback">
   <div class="stage" aria-hidden="true">
+    <div class="stage__tint"></div>
     <div class="stage__vp">
-      <div class="stage__sky"></div>
       <div class="vinylwrap">
         <div class="vinyl"><div class="vinyl__body"><span class="vinyl__edge" style="--i:1"></span><span class="vinyl__edge" style="--i:2"></span><span class="vinyl__edge" style="--i:3"></span><span class="vinyl__edge" style="--i:4"></span><span class="vinyl__edge" style="--i:5"></span><span class="vinyl__edge" style="--i:6"></span><span class="vinyl__edge" style="--i:7"></span><span class="vinyl__edge" style="--i:8"></span><span class="vinyl__edge" style="--i:9"></span><span class="vinyl__edge" style="--i:10"></span><span class="vinyl__edge" style="--i:11"></span><span class="vinyl__edge" style="--i:12"></span><div class="vinyl__face"><div class="vinyl__sheen"></div><div class="vinyl__label"></div><div class="vinyl__spindle"></div></div></div></div>
       </div>
@@ -1174,8 +1187,8 @@ button,a,input,summary{touch-action:manipulation}
 <!-- ═══════════════════════  ACT  ═══════════════════════ -->
 <section class="sleeve" id="act">
   <div class="stage" aria-hidden="true">
+    <div class="stage__tint"></div>
     <div class="stage__vp">
-      <div class="stage__sky"></div>
       <div class="vinylwrap">
         <div class="vinyl"><div class="vinyl__body"><span class="vinyl__edge" style="--i:1"></span><span class="vinyl__edge" style="--i:2"></span><span class="vinyl__edge" style="--i:3"></span><span class="vinyl__edge" style="--i:4"></span><span class="vinyl__edge" style="--i:5"></span><span class="vinyl__edge" style="--i:6"></span><span class="vinyl__edge" style="--i:7"></span><span class="vinyl__edge" style="--i:8"></span><span class="vinyl__edge" style="--i:9"></span><span class="vinyl__edge" style="--i:10"></span><span class="vinyl__edge" style="--i:11"></span><span class="vinyl__edge" style="--i:12"></span><div class="vinyl__face"><div class="vinyl__sheen"></div><div class="vinyl__label"></div><div class="vinyl__spindle"></div></div></div></div>
       </div>
@@ -1963,7 +1976,7 @@ button,a,input,summary{touch-action:manipulation}
   function frame(){
     ticking = false;
     var vh = window.innerHeight;
-    onScroll(); onHush(); onMini();
+    onScroll(); onHush(); onMini(); worldPass();
     if (!reduce){
       for (var i = 0; i < rows.length; i++){
         var r = rows[i].getBoundingClientRect();
@@ -2012,6 +2025,43 @@ button,a,input,summary{touch-action:manipulation}
     sizeT = setTimeout(sizeFlips, 180);
   }, { passive:true });
   window.addEventListener('load', sizeFlips);
+
+  /* ═══════════════ the footage running under the whole page ═══════════════ */
+  var world = document.getElementById('worldVideo');
+  var worldWrap = document.querySelector('.world');
+  // honour Data Saver: a 1080p loop is not worth someone's metered connection
+  var thrifty = !!(navigator.connection && navigator.connection.saveData);
+  if (world && (thrifty || reduce)){
+    world.removeAttribute('preload');
+    world.preload = 'none';
+    try { world.pause(); } catch(e){}
+    world = null;
+    if (worldWrap) worldWrap.style.display = 'none';
+  }
+  if (world){
+    var wready = function(){ world.classList.add('is-ready'); };
+    if (world.readyState >= 3) wready();
+    else world.addEventListener('loadeddata', wready, { once:true });
+    var wkick = function(){ if (window.pageYOffset > window.innerHeight * 0.55){ var q = world.play(); if (q && q.catch) q.catch(function(){}); } };
+    window.addEventListener('touchstart', wkick, { once:true, passive:true });
+    window.addEventListener('click', wkick, { once:true });
+  }
+  // frame() ran before `world` existed, so its first pass bailed out and the
+  // hero shared the screen with a second decoding video until the first scroll
+  worldPass();
+  function worldPass(){
+    if (!world) return;
+    var y = window.pageYOffset, vh = window.innerHeight;
+    // the hero has its own copy on screen - don't decode two at once
+    var wanted = y > vh * 0.55;
+    if (!reduce){
+      if (wanted && world.paused) { var q = world.play(); if (q && q.catch) q.catch(function(){}); }
+      else if (!wanted && !world.paused) { world.pause(); }
+      var max = document.documentElement.scrollHeight - vh;
+      var pr = max > 0 ? y / max : 0;
+      worldWrap.style.transform = 'translate3d(0,' + (pr * -46).toFixed(1) + 'px,0)';
+    }
+  }
 
 })();
 </script>
