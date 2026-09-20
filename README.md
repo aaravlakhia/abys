@@ -69,8 +69,15 @@ The hero's entrance animation is the language for the entire page, extended into
   the pointer (rAF-throttled, `hover: hover` only).
 - **The chorus has depth.** Living voices sit forward at `translateZ(+18px)`; dead ones
   fall back to `-30px`. As you drag toward 2026 the chorus literally recedes from you.
-- **Records exist in space.** Two groove records per section lie flat at `rotateX(66/72deg)`
-  and counter-rotate at different depths; the corner deck is a turntable seen at an angle.
+- **Every section is set inside the opening frame.** The hero's own poster is the deep
+  ground of each section, pushed to `translateZ(-620px)` and thrown far out of focus, so
+  the whole page sits in the same meadow the film opens on.
+- **A record with real thickness.** Twelve faces stacked in Z, a fine groove pattern, a
+  warm centre label, a spindle hole, and a specular sweep that counter-rotates so the
+  light reads as fixed in the room while the disc turns under it. One per section, each
+  at a different size, height and tilt.
+- **A readability scrim** sits between that ground and the content. Measured contrast of
+  body copy over the composited background runs 6.7:1 to 15.7:1 against a 4.5:1 floor.
 - **The background field is pinned to the viewport.** Each section's 3D stage is a
   `position: sticky` viewport-height layer holding ~30 dust motes at staggered
   `translateZ`. This matters: stretched over a full section (~5500px) the same field put
