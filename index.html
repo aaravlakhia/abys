@@ -4,17 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Requiem — The world is going quiet, press play while you can</title>
-<meta name="description" content="A record label whose artists will never tour again. An archive of sounds the Earth has stopped making — and what it takes to keep the rest of them playing.">
+<meta name="description" content="A record label whose artists will never tour again. Hear the extinct Kauaʻi ʻōʻō call into the gap where his mate should answer, and scrub a dawn chorus from 1970 to today as the voices drop out.">
+<meta name="theme-color" content="#dbe6ee">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Requiem — The world is going quiet">
+<meta property="og:description" content="A record label whose artists will never tour again. An archive of sounds the Earth has stopped making.">
+<meta property="og:image" content="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Requiem — The world is going quiet">
+<meta name="twitter:description" content="A record label whose artists will never tour again.">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%230b0b0c'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23dbe6ee' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23dbe6ee'/%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=UnifrakturCook:wght@700&amp;family=Instrument+Sans:wght@400;500&amp;display=swap" rel="stylesheet">
 
 <style>
-/* ────────────────────────────────  TOKENS  ──────────────────────────────── */
+/* ══════════════════════════════  TOKENS  ══════════════════════════════ */
 :root{
   --ink:#0b0b0c;
   --sky:#dbe6ee;
+  --rust:#e8705a;
   --nav-gap:clamp(1.1rem, 2.2vw, 2.15rem);
   --pad-x:clamp(1.25rem, 4vw, 3.6rem);
   --ease:cubic-bezier(.22,1,.36,1);
@@ -23,162 +36,71 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  margin:0;
-  color:var(--ink);
-  background:var(--sky);
-  overflow-x:hidden;
+  margin:0;color:var(--ink);background:var(--sky);overflow-x:hidden;
   font-family:"Instrument Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
 a{color:inherit;text-decoration:none}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
 body.menu-open{overflow:hidden}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--ink);color:#fff;padding:.8rem 1.2rem;border-radius:0 0 6px 0}
+.skip:focus{left:0}
 
-/* ────────────────────────────────  HERO  ──────────────────────────────── */
-.hero{
-  position:relative;
-  min-height:100svh;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  background:var(--sky);
-}
+/* ══════════════════════════════  HERO  ══════════════════════════════ */
+.hero{position:relative;min-height:100svh;overflow:hidden;display:flex;flex-direction:column;background:var(--sky)}
 
 .hero__media{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  transform:scale(1.08);
-  filter:blur(14px);
-  opacity:0;
+  position:absolute;inset:0;z-index:0;
+  transform:scale(1.08);filter:blur(14px);opacity:0;
   animation:mediaIn 1.9s var(--ease) .1s forwards;
 }
 @keyframes mediaIn{to{transform:scale(1);filter:blur(0);opacity:1}}
 
-/* blurred poster backdrop — off by default, switched on for portrait phones */
 .hero__media::before{
-  content:"";
-  display:none;
-  position:absolute;
-  inset:-8%;
-  z-index:0;
+  content:"";display:none;position:absolute;inset:-8%;z-index:0;
   background:var(--poster) center 22%/cover no-repeat;
-  filter:blur(30px) saturate(104%);
-  transform:scale(1.05);
+  filter:blur(30px) saturate(104%);transform:scale(1.05);
 }
-
-/* type wash — keeps black type crisp on the sky without dimming the footage */
 .hero__media::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:3;
-  pointer-events:none;
+  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
   background:
     linear-gradient(to bottom, rgba(226,236,243,.55) 0%, rgba(226,236,243,.18) 34%, rgba(226,236,243,0) 58%),
     radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,.35), rgba(255,255,255,0) 60%);
 }
-
-.hero__media img,
-.hero__media video{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center 62%;
-  display:block;
+.hero__media img,.hero__media video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 62%;display:block;
 }
 .hero__media img{z-index:1}
-.hero__media video{
-  z-index:2;
-  opacity:0;
-  transition:opacity 1.2s ease;
-}
+.hero__media video{z-index:2;opacity:0;transition:opacity 1.2s ease}
 .hero__media video.is-ready{opacity:1}
 
-/* ────────────────────────────────  NAV  ──────────────────────────────── */
+/* ── nav ── */
 .nav{
-  position:relative;
-  z-index:60;                         /* MUST outrank .menu (50) */
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:1rem;
-  padding:clamp(1.1rem,2.4vw,1.9rem) var(--pad-x);
+  position:relative;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;padding:clamp(1.1rem,2.4vw,1.9rem) var(--pad-x);
 }
-.logo{
-  font-family:"UnifrakturCook",serif;
-  font-weight:700;
-  font-size:clamp(1.5rem,2.4vw,1.9rem);
-  line-height:1;
-  letter-spacing:.01em;
-  white-space:nowrap;
-}
-.nav__links{
-  display:flex;
-  gap:var(--nav-gap);
-  list-style:none;
-  margin:0;
-  padding:0;
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-}
-.nav__links a{
-  font-size:clamp(.95rem,1.05vw,1.05rem);
-  letter-spacing:.005em;
-  padding:.15rem 0;
-  display:inline-block;
-  position:relative;
-}
-.nav__links a::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:-2px;
-  height:1px;
-  background:currentColor;
-  transform:scaleX(0);
-  transform-origin:right;
-  transition:transform .5s var(--ease);
-}
+.logo{font-family:"UnifrakturCook",serif;font-weight:700;font-size:clamp(1.5rem,2.4vw,1.9rem);line-height:1;letter-spacing:.01em;white-space:nowrap}
+.nav__links{display:flex;gap:var(--nav-gap);list-style:none;margin:0;padding:0;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.nav__links a{font-size:clamp(.95rem,1.05vw,1.05rem);letter-spacing:.005em;padding:.15rem 0;display:inline-block;position:relative}
+.nav__links a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
 .nav__links a:hover::after{transform:scaleX(1);transform-origin:left}
-
 .nav__right{display:flex;align-items:center;gap:.6rem}
 
 .btn-play{
-  background:var(--ink);
-  color:#fff;
-  border-radius:6px;
-  padding:.72rem 1.15rem;
-  font-size:.95rem;
-  line-height:1;
-  white-space:nowrap;
+  background:var(--ink);color:#fff;border-radius:6px;padding:.72rem 1.15rem;
+  font-size:.95rem;line-height:1;white-space:nowrap;display:inline-block;
   transition:transform .45s var(--ease), background-color .45s var(--ease), box-shadow .45s var(--ease);
 }
 .btn-play:hover{transform:translateY(-2px);background:#1e1e21;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
 .btn-play:active{transform:translateY(0)}
 
-/* hamburger */
-.burger{
-  display:none;
-  width:44px;height:44px;
-  margin-right:-8px;
-  position:relative;
-  z-index:60;
-  border-radius:8px;
-  flex:0 0 auto;
-}
-.burger span{
-  position:absolute;
-  left:11px;
-  width:22px;height:1.6px;
-  background:var(--ink);
-  border-radius:2px;
-  transition:transform .55s var(--ease-in-out), opacity .3s ease, width .55s var(--ease-in-out);
-}
+.burger{display:none;width:44px;height:44px;margin-right:-8px;position:relative;z-index:60;border-radius:8px;flex:0 0 auto}
+.burger span{position:absolute;left:11px;width:22px;height:1.6px;background:var(--ink);border-radius:2px;transition:transform .55s var(--ease-in-out), opacity .3s ease, width .55s var(--ease-in-out)}
 .burger span:nth-child(1){top:17px}
 .burger span:nth-child(2){top:22px;width:15px}
 .burger span:nth-child(3){top:27px}
@@ -186,83 +108,49 @@ body.menu-open{overflow:hidden}
 .burger.is-active span:nth-child(2){opacity:0;transform:translateX(10px)}
 .burger.is-active span:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
 
-/* ──────────────────────────  HEADLINE (TOP-ANCHORED)  ────────────────────── */
+/* ── headline: TOP-ANCHORED, never centred ── */
 .hero__inner{
-  position:relative;
-  z-index:10;
-  flex:1;
-  display:flex;
-  justify-content:center;      /* horizontal only — NO align-items */
-  padding:clamp(1.5rem,5vh,4.5rem) var(--pad-x) 0;
-  pointer-events:none;
+  position:relative;z-index:10;flex:1;display:flex;justify-content:center;
+  padding:clamp(1.5rem,5vh,4.5rem) var(--pad-x) 0;pointer-events:none;
 }
 .headline{
-  margin:0;
-  font-family:"Instrument Serif",Georgia,serif;
-  font-weight:400;
-  font-size:clamp(2.7rem,6.3vw,6.75rem);
-  line-height:1.06;
-  letter-spacing:-.005em;
-  text-align:center;
+  margin:0;font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(2.7rem,6.3vw,6.75rem);line-height:1.06;letter-spacing:-.005em;text-align:center;
 }
-.line{
-  display:block;
-  overflow:hidden;
-  white-space:nowrap;
-  padding-bottom:.06em;
-  margin-bottom:-.06em;
-}
-.line>span{
-  display:block;
-  transform:translateY(110%);
-  opacity:0;
-  animation:lineUp 1.25s var(--ease) forwards;
-}
+.line{display:block;overflow:hidden;white-space:nowrap;padding-bottom:.06em;margin-bottom:-.06em}
+.line>span{display:block;transform:translateY(110%);opacity:0;animation:lineUp 1.25s var(--ease) forwards}
 .line:nth-child(1)>span{animation-delay:.55s}
 .line:nth-child(2)>span{animation-delay:.68s}
 @keyframes lineUp{to{transform:translateY(0);opacity:1}}
 
-/* nav stagger */
 .rise{opacity:0;transform:translateY(-14px);animation:rise .95s var(--ease) forwards}
 @keyframes rise{to{opacity:1;transform:translateY(0)}}
-.d1{animation-delay:.18s}
-.d2{animation-delay:.26s}
-.d3{animation-delay:.32s}
-.d4{animation-delay:.38s}
-.d5{animation-delay:.44s}
-.d6{animation-delay:.52s}
+.d1{animation-delay:.18s}.d2{animation-delay:.26s}.d3{animation-delay:.32s}
+.d4{animation-delay:.38s}.d5{animation-delay:.44s}.d6{animation-delay:.52s}
 
-/* ────────────────────────────────  MENU  ──────────────────────────────── */
+.scroll-cue{
+  position:absolute;left:50%;bottom:1.6rem;transform:translateX(-50%);z-index:10;
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;opacity:0;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  animation:rise .95s var(--ease) 1.5s forwards;
+}
+.scroll-cue i{display:block;width:1px;height:34px;background:currentColor;opacity:.4;animation:cue 2.4s var(--ease-in-out) infinite}
+@keyframes cue{0%,100%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
+
+/* ══════════════════════════════  MENU  ══════════════════════════════ */
 .menu{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:0 var(--pad-x);
-  background:rgba(233,240,246,.92);
-  backdrop-filter:blur(22px) saturate(140%);
-  -webkit-backdrop-filter:blur(22px) saturate(140%);
-  clip-path:inset(0 0 100% 0);
-  visibility:hidden;
+  position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;justify-content:center;
+  padding:0 var(--pad-x);background:rgba(233,240,246,.92);
+  backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%);
+  clip-path:inset(0 0 100% 0);visibility:hidden;
   transition:clip-path .85s var(--ease-in-out), visibility 0s linear .85s;
 }
-.menu.is-open{
-  clip-path:inset(0 0 0 0);
-  visibility:visible;
-  transition:clip-path .85s var(--ease-in-out), visibility 0s linear 0s;
-}
+.menu.is-open{clip-path:inset(0 0 0 0);visibility:visible;transition:clip-path .85s var(--ease-in-out), visibility 0s linear 0s}
 .menu__list{list-style:none;margin:0;padding:0}
 .menu__list li{overflow:hidden}
 .menu__list a{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-size:clamp(2.35rem,12vw,3.4rem);
-  line-height:1.22;
-  padding:.12em 0;
-  display:block;
-  transform:translateY(115%);
-  opacity:0;
+  font-family:"Instrument Serif",Georgia,serif;font-size:clamp(2.35rem,12vw,3.4rem);
+  line-height:1.22;padding:.12em 0;display:block;transform:translateY(115%);opacity:0;
   transition:transform .8s var(--ease), opacity .6s ease;
 }
 .menu.is-open .menu__list a{transform:translateY(0);opacity:1}
@@ -270,173 +158,131 @@ body.menu-open{overflow:hidden}
 .menu.is-open .menu__list li:nth-child(2) a{transition-delay:.33s}
 .menu.is-open .menu__list li:nth-child(3) a{transition-delay:.40s}
 .menu.is-open .menu__list li:nth-child(4) a{transition-delay:.47s}
-.menu__rule{
-  height:1px;
-  background:rgba(11,11,12,.16);
-  margin:2.2rem 0 0;
-  transform:scaleX(0);
-  transform-origin:left;
-  transition:transform .9s var(--ease);
-}
+.menu__rule{height:1px;background:rgba(11,11,12,.16);margin:2.2rem 0 0;transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease)}
 .menu.is-open .menu__rule{transform:scaleX(1);transition-delay:.5s}
-.menu__foot{
-  margin-top:2.2rem;
-  opacity:0;
-  transform:translateY(22px);
-  transition:transform .8s var(--ease), opacity .6s ease;
-}
+.menu__foot{margin-top:2.2rem;opacity:0;transform:translateY(22px);transition:transform .8s var(--ease), opacity .6s ease}
 .menu.is-open .menu__foot{opacity:1;transform:translateY(0);transition-delay:.56s}
-.menu__foot .btn-play{display:inline-block;padding:.95rem 1.6rem;font-size:1rem}
+.menu__foot .btn-play{padding:.95rem 1.6rem;font-size:1rem}
 
-/* ═══════════════════════════  BELOW THE FOLD  ═══════════════════════════ */
+/* ═══════════════════════════  PAGE FURNITURE  ═══════════════════════════ */
 .shell{max-width:1180px;margin:0 auto;padding:clamp(4.5rem,10vw,8.5rem) var(--pad-x)}
-
 .sleeve{background:var(--ink);color:var(--sky)}
 .meadow{background:var(--sky);color:var(--ink)}
 
-.tag{
-  display:flex;align-items:center;gap:.7rem;
-  font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;
-  margin:0 0 1.6rem;opacity:.62;
-}
+.tag{display:flex;align-items:center;gap:.7rem;font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;margin:0 0 1.6rem;opacity:.62}
 .disc{flex:0 0 auto;animation:spin 6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-.sec-title{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-weight:400;
-  font-size:clamp(2.1rem,4.6vw,3.9rem);
-  line-height:1.08;
-  letter-spacing:-.005em;
-  margin:0;
-  text-wrap:pretty;
-}
+.sec-title{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(2.1rem,4.6vw,3.9rem);line-height:1.08;letter-spacing:-.005em;margin:0;text-wrap:pretty}
 .sec-title em{font-style:italic}
-.say{
-  font-size:clamp(1rem,1.25vw,1.15rem);
-  line-height:1.62;
-  max-width:60ch;
-  margin:1.4rem 0 0;
-  opacity:.72;
-}
+.say{font-size:clamp(1rem,1.25vw,1.15rem);line-height:1.62;max-width:60ch;margin:1.4rem 0 0;opacity:.72}
 
-/* tracklist */
+/* ── the deck: scroll progress as a tonearm ── */
+.deck{position:fixed;right:22px;bottom:22px;z-index:45;width:78px;height:78px;pointer-events:none;opacity:0;transition:opacity .6s ease}
+.deck.on{opacity:.85}
+.deck__disc{position:absolute;left:5px;top:12px;width:60px;height:60px;animation:spin 3.4s linear infinite}
+.deck__arm{position:absolute;right:12px;top:8px;width:2px;height:44px;background:var(--ink);transform-origin:top center;transform:rotate(-22deg);transition:transform .25s linear;border-radius:2px}
+.deck__arm::after{content:"";position:absolute;bottom:-3px;left:-3px;width:8px;height:9px;background:var(--ink);border-radius:2px}
+.sleeve .deck__disc circle{stroke:var(--sky)}
+
+/* ── now playing pill ── */
+.np{
+  position:fixed;left:22px;bottom:22px;z-index:46;display:flex;align-items:center;gap:.7rem;
+  background:var(--ink);color:var(--sky);border-radius:999px;padding:.6rem .7rem .6rem 1rem;
+  font-size:.8rem;letter-spacing:.04em;box-shadow:0 14px 30px -14px rgba(0,0,0,.7);
+  transform:translateY(20px);opacity:0;pointer-events:none;transition:transform .5s var(--ease), opacity .4s ease;
+}
+.np.on{transform:translateY(0);opacity:1;pointer-events:auto}
+.np__eq{display:flex;align-items:flex-end;gap:2px;height:13px}
+.np__eq i{width:2px;background:var(--rust);height:40%;animation:eq .9s ease-in-out infinite}
+.np__eq i:nth-child(2){animation-delay:.18s}
+.np__eq i:nth-child(3){animation-delay:.36s}
+@keyframes eq{0%,100%{height:30%}50%{height:100%}}
+.np button{background:rgba(219,230,238,.14);border-radius:999px;padding:.4rem .8rem;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase}
+.np button:hover{background:rgba(219,230,238,.26)}
+
+/* ══════════════════════════  TRACKLIST  ══════════════════════════ */
 .tracks{margin:clamp(2.5rem,5vw,4rem) 0 0;border-top:1px solid rgba(219,230,238,.18)}
-.track{
-  display:grid;
-  grid-template-columns:5.5rem minmax(0,1fr) 11rem;
-  gap:1.5rem;
-  align-items:start;
-  padding:clamp(1.6rem,3vw,2.4rem) 0;
-  border-bottom:1px solid rgba(219,230,238,.18);
-}
+.track{display:grid;grid-template-columns:5.5rem minmax(0,1fr) 11rem;gap:1.5rem;align-items:start;padding:clamp(1.6rem,3vw,2.4rem) 0;border-bottom:1px solid rgba(219,230,238,.18)}
 .track__no{font-size:.8rem;letter-spacing:.14em;opacity:.5;padding-top:.45rem}
-.track__name{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-size:clamp(1.55rem,2.9vw,2.35rem);
-  line-height:1.15;
-  margin:0;
-}
+.track__name{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.55rem,2.9vw,2.35rem);line-height:1.15;margin:0}
 .track__where{font-size:.9rem;letter-spacing:.02em;opacity:.55;margin:.5rem 0 0}
 .track__note{font-size:1rem;line-height:1.6;opacity:.78;margin:.95rem 0 0;max-width:52ch}
 .track__meta{display:flex;flex-direction:column;gap:.45rem;padding-top:.4rem;font-size:.82rem;letter-spacing:.06em}
 .track__meta span{opacity:.5}
 .track__meta b{font-weight:500;opacity:.95}
-.track__meta .gone{color:#e8705a;opacity:1}
+.track__meta .gone{color:var(--rust);opacity:1}
 
-/* ── the player that plays the gap ── */
-.player{
-  margin:1.6rem 0 0;
-  padding:1.4rem 1.5rem 1.3rem;
-  border:1px solid rgba(219,230,238,.22);
-  border-radius:10px;
-  max-width:52ch;
-  background:rgba(219,230,238,.035);
-}
-.player__btn{
-  display:inline-flex;align-items:center;gap:.6rem;
-  background:var(--sky);color:var(--ink);
-  border-radius:6px;padding:.7rem 1.1rem;
-  font-size:.92rem;line-height:1;
-  transition:transform .45s var(--ease), background-color .45s var(--ease);
-}
+/* ── player ── */
+.player{margin:1.6rem 0 0;padding:1.4rem 1.5rem 1.3rem;border:1px solid rgba(219,230,238,.22);border-radius:10px;max-width:54ch;background:rgba(219,230,238,.035)}
+.player__btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--sky);color:var(--ink);border-radius:6px;padding:.7rem 1.1rem;font-size:.92rem;line-height:1;transition:transform .45s var(--ease), background-color .45s var(--ease)}
 .player__btn:hover{transform:translateY(-2px);background:#fff}
 .player__btn svg{flex:0 0 auto}
-.player__groove{
-  position:relative;
-  height:54px;
-  margin:1.2rem 0 .9rem;
-  border-top:1px solid rgba(219,230,238,.16);
-  border-bottom:1px solid rgba(219,230,238,.16);
-}
-.player__note{
-  position:absolute;top:50%;transform:translateY(-50%);
-  width:3px;border-radius:3px;background:var(--sky);opacity:.85;
-}
-.player__gap{
-  position:absolute;top:8px;bottom:8px;left:22%;right:0;
-  border:1px dashed rgba(232,112,90,.5);
-  border-radius:4px;
-  display:flex;align-items:center;justify-content:center;
-}
-.player__gap span{
-  font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
-  color:#e8705a;opacity:.85;
-}
-.player__head{
-  position:absolute;top:0;bottom:0;left:0;width:1px;
-  background:var(--sky);opacity:0;
-}
+.player__groove{position:relative;height:54px;margin:1.2rem 0 .9rem;border-top:1px solid rgba(219,230,238,.16);border-bottom:1px solid rgba(219,230,238,.16);overflow:hidden}
+.player__note{position:absolute;top:50%;transform:translateY(-50%);width:3px;border-radius:3px;background:var(--sky);opacity:.85}
+.player__gap{position:absolute;top:8px;bottom:8px;border:1px dashed rgba(232,112,90,.5);border-radius:4px;display:flex;align-items:center;justify-content:center}
+.player__gap span{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);opacity:.85}
+.player__head{position:absolute;top:0;bottom:0;left:0;width:1px;background:var(--sky);opacity:0}
 .player.is-playing .player__head{opacity:.9}
-.player__meta{
-  display:flex;gap:1.6rem;flex-wrap:wrap;
-  margin:0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55;
-}
+.player__meta{display:flex;gap:1.6rem;flex-wrap:wrap;margin:0;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.55}
 .player__meta b{font-weight:500;opacity:1}
-.player__meta .zero{color:#e8705a}
-.player__disc{
-  margin:1rem 0 0;font-size:.72rem;line-height:1.6;opacity:.42;
-}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.player__meta .zero{color:var(--rust)}
+.player__disc{margin:1rem 0 0;font-size:.72rem;line-height:1.6;opacity:.42}
 
-/* numbers */
+/* ══════════════════════════  CHORUS SCRUBBER  ══════════════════════════ */
+.chorus__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(2rem,5vw,4.5rem);align-items:center;margin-top:clamp(2.5rem,5vw,4rem)}
+.voices{display:grid;grid-template-columns:repeat(8,1fr);gap:clamp(.5rem,1.2vw,.85rem);margin:0 0 2rem;max-width:440px}
+.voice{position:relative;aspect-ratio:1;border-radius:50%;border:1px solid currentColor;opacity:.22;transition:opacity .5s var(--ease), background-color .5s var(--ease), transform .5s var(--ease)}
+.voice.lit{opacity:1;background:currentColor}
+.voice.lit.sing{transform:scale(1.35)}
+.year-read{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(3.4rem,8vw,5.6rem);line-height:.95;margin:0;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.year-sub{margin:.4rem 0 1.8rem;font-size:.95rem;letter-spacing:.04em;opacity:.7}
+.year-sub b{font-weight:500;opacity:1}
+.year-sub .lost{color:var(--rust)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;background:transparent;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:currentColor;opacity:.3;border-radius:2px}
+input[type=range]::-moz-range-track{height:2px;background:currentColor;opacity:.3;border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:currentColor;margin-top:-10px;border:0}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:currentColor;border:0}
+.scale{display:flex;justify-content:space-between;margin-top:.7rem;font-size:.72rem;letter-spacing:.16em;opacity:.5}
+.chorus__ctl{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;margin-top:1.8rem}
+.chip{border:1px solid currentColor;border-radius:999px;padding:.6rem 1.1rem;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;opacity:.65;transition:opacity .35s var(--ease), background-color .35s var(--ease), color .35s var(--ease)}
+.chip:hover{opacity:1}
+.chip.active{opacity:1;background:currentColor}
+.chip.active span{color:var(--sky);mix-blend-mode:normal}
+.meadow .chip.active span{color:var(--sky)}
+.sleeve .chip.active span{color:var(--ink)}
+
+/* ══════════════════════════  FIGURES / LIFETIME  ══════════════════════════ */
 .figs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(2rem,5vw,4.5rem);margin-top:clamp(2.8rem,5vw,4rem)}
-.fig__n{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-size:clamp(3.2rem,8vw,6rem);
-  line-height:.95;
-  margin:0;
-  letter-spacing:-.01em;
-}
+.fig__n{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(3.2rem,8vw,6rem);line-height:.95;margin:0;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
 .fig__t{font-size:1rem;line-height:1.6;margin:1rem 0 0;opacity:.72;max-width:34ch}
 
-/* actions */
-.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.5rem,3vw,2.5rem);margin-top:clamp(2.8rem,5vw,4rem)}
-.act__h{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-size:clamp(1.35rem,2.2vw,1.75rem);
-  margin:0 0 .7rem;
-  line-height:1.2;
+.life{margin-top:clamp(3rem,6vw,5rem);padding:clamp(1.8rem,4vw,2.8rem);border:1px solid rgba(219,230,238,.22);border-radius:12px;background:rgba(219,230,238,.035)}
+.life__row{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;font-size:clamp(1.1rem,2vw,1.5rem);font-family:"Instrument Serif",Georgia,serif}
+.life__row input{
+  width:6.5ch;background:transparent;border:0;border-bottom:1px solid currentColor;
+  font-family:"Instrument Serif",Georgia,serif;font-size:inherit;text-align:center;padding:.1em .2em;
+  -moz-appearance:textfield;
 }
+.life__row input::-webkit-outer-spin-button,.life__row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.life__out{margin:1.6rem 0 0;min-height:3em}
+.life__big{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.6rem,3.4vw,2.5rem);line-height:1.2;margin:0}
+.life__big b{color:var(--rust);font-weight:400}
+.life__sting{margin:.9rem 0 0;font-size:1rem;line-height:1.6;opacity:.8;max-width:50ch}
+.life__note{margin:1.2rem 0 0;font-size:.72rem;line-height:1.6;opacity:.42;max-width:56ch}
+
+/* ══════════════════════════  ACTIONS / FOOTER  ══════════════════════════ */
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(1.5rem,3vw,2.5rem);margin-top:clamp(2.8rem,5vw,4rem)}
+.act__h{font-family:"Instrument Serif",Georgia,serif;font-size:clamp(1.35rem,2.2vw,1.75rem);margin:0 0 .7rem;line-height:1.2}
 .act__p{font-size:.98rem;line-height:1.6;margin:0;opacity:.72}
 .act__n{font-size:.78rem;letter-spacing:.2em;opacity:.45;display:block;margin-bottom:1rem}
-
 .cta-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-top:clamp(2.5rem,5vw,3.5rem)}
-.btn-lg{
-  background:var(--ink);color:#fff;border-radius:6px;
-  padding:1.05rem 1.9rem;font-size:1rem;line-height:1;display:inline-block;
-  transition:transform .45s var(--ease), background-color .45s var(--ease), box-shadow .45s var(--ease);
-}
-.btn-lg:hover{transform:translateY(-2px);background:#1e1e21;box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
-.btn-ghost{
-  border:1px solid rgba(11,11,12,.3);border-radius:6px;
-  padding:1.05rem 1.9rem;font-size:1rem;line-height:1;display:inline-block;
-  transition:border-color .45s var(--ease), transform .45s var(--ease);
-}
-.btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
-.fill{font-size:.82rem;opacity:.5;margin:1.4rem 0 0}
+.btn-lg{background:var(--sky);color:var(--ink);border-radius:6px;padding:1.05rem 1.9rem;font-size:1rem;line-height:1;display:inline-block;transition:transform .45s var(--ease), background-color .45s var(--ease)}
+.btn-lg:hover{transform:translateY(-2px);background:#fff}
+.btn-ghost{border:1px solid rgba(219,230,238,.35);border-radius:6px;padding:1.05rem 1.9rem;font-size:1rem;line-height:1;display:inline-block;transition:border-color .45s var(--ease), transform .45s var(--ease)}
+.btn-ghost:hover{border-color:var(--sky);transform:translateY(-2px)}
+.fill{font-size:.82rem;opacity:.45;margin:1.4rem 0 0}
 
-/* footer */
 .foot{background:var(--ink);color:var(--sky);border-top:1px solid rgba(219,230,238,.14)}
 .foot .shell{padding-top:clamp(3rem,6vw,4rem);padding-bottom:clamp(3rem,6vw,4rem)}
 .foot__top{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:baseline}
@@ -444,11 +290,10 @@ body.menu-open{overflow:hidden}
 .src{font-size:.78rem;line-height:1.85;opacity:.55;margin:1.8rem 0 0;max-width:78ch}
 .src b{font-weight:500;opacity:.9}
 
-/* scroll reveal */
 .rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
 .rv.in{opacity:1;transform:none}
 
-/* ────────────────────────────  RESPONSIVE  ──────────────────────────── */
+/* ══════════════════════════  RESPONSIVE  ══════════════════════════ */
 @media (max-width:900px){
   .nav__links{display:none}
   .nav__right .btn-play{display:none}
@@ -459,86 +304,70 @@ body.menu-open{overflow:hidden}
   .headline{font-size:clamp(2.4rem,6.4vw,3.6rem);max-width:15ch}
   .track{grid-template-columns:1fr;gap:.4rem}
   .track__meta{flex-direction:row;gap:1.6rem;padding-top:1rem}
-  .figs{grid-template-columns:1fr}
-  .acts{grid-template-columns:1fr}
+  .figs,.acts,.chorus__grid{grid-template-columns:1fr}
+  .deck{display:none}
+  .np{left:12px;right:12px;bottom:12px;justify-content:space-between}
 }
-
 @media (max-width:900px) and (orientation:portrait){
   .hero__media::before{display:block}
-  .hero__media img,
-  .hero__media video{
-    top:auto;
-    bottom:0;
-    height:64svh;
-    object-position:center 62%;
+  .hero__media img,.hero__media video{
+    top:auto;bottom:0;height:64svh;object-position:center 62%;
     -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.6) 9%, #000 20%);
     mask-image:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.6) 9%, #000 20%);
   }
 }
-
 @media (max-width:560px){
   .headline{font-size:clamp(2.15rem,9.4vw,3.1rem);line-height:1.12;max-width:11ch}
   .hero__inner{padding-top:clamp(1.75rem,7vh,3rem)}
   .hero__media img,.hero__media video{object-position:center 58%}
+  .voices{grid-template-columns:repeat(8,1fr)}
 }
-
-@media (max-width:380px){
-  .headline{font-size:2rem}
-}
-
+@media (max-width:380px){ .headline{font-size:2rem} }
 @media (max-height:520px) and (orientation:landscape){
   .headline{font-size:clamp(1.7rem,5vw,2.4rem);max-width:22ch}
   .hero__inner{padding-top:.75rem}
   .menu__list a{font-size:clamp(1.4rem,5vw,1.9rem)}
-  .menu__rule{margin-top:1.2rem}
-  .menu__foot{margin-top:1.2rem}
+  .menu__rule{margin-top:1.2rem}.menu__foot{margin-top:1.2rem}
+  .scroll-cue{display:none}
 }
 
-/* ──────────────────────────  REDUCED MOTION  ────────────────────────── */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms !important;
-    animation-delay:0ms !important;
-    transition-duration:.01ms !important;
-  }
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
   .hero__media{opacity:1;transform:none;filter:none}
   .line>span{transform:none;opacity:1}
   .rv{opacity:1;transform:none}
+  .scroll-cue{opacity:1}
+  .deck__disc,.disc{animation:none}
 }
 </style>
 </head>
 <body>
+<a class="skip" href="#catalogue">Skip to the archive</a>
 
 <section class="hero">
   <div class="hero__media">
-    <img
-      src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85"
-      alt="A vintage turntable resting on a mossy rock in an alpine meadow at golden hour">
-    <video
-      id="heroVideo"
-      autoplay muted loop playsinline preload="auto"
-      aria-hidden="true"
-      poster="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85">
+    <img src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85"
+         alt="A vintage turntable resting on a mossy rock in an alpine meadow at golden hour">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true"
+           poster="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260908_122011_59c97465-4d23-4fdc-ac40-f6832f573e28.png&amp;w=1920&amp;q=85">
       <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260908_125738_eb584080-9f98-489e-adb2-014760aa34da.mp4" type="video/mp4">
     </video>
   </div>
 
   <header class="nav">
     <a class="logo rise d1" href="#" aria-label="Requiem — home">Requiem</a>
-
     <nav aria-label="Primary">
       <ul class="nav__links">
         <li class="rise d2"><a href="#catalogue">Catalogue</a></li>
-        <li class="rise d3"><a href="#silenced">Silenced</a></li>
-        <li class="rise d4"><a href="#listen">Listen</a></li>
+        <li class="rise d3"><a href="#chorus">Chorus</a></li>
+        <li class="rise d4"><a href="#evidence">Evidence</a></li>
         <li class="rise d5"><a href="#act">Act</a></li>
       </ul>
     </nav>
-
     <div class="nav__right">
       <a class="btn-play rise d6" href="#catalogue">Press Play</a>
-      <button class="burger rise d6" id="burger" type="button"
-              aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <button class="burger rise d6" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -550,14 +379,16 @@ body.menu-open{overflow:hidden}
       <span class="line"><span>press play while you can</span></span>
     </h1>
   </div>
+
+  <div class="scroll-cue" aria-hidden="true">Side A<i></i></div>
 </section>
 
 <div class="menu" id="menu">
   <nav aria-label="Mobile">
     <ul class="menu__list">
       <li><a href="#catalogue">Catalogue</a></li>
-      <li><a href="#silenced">Silenced</a></li>
-      <li><a href="#listen">Listen</a></li>
+      <li><a href="#chorus">Chorus</a></li>
+      <li><a href="#evidence">Evidence</a></li>
       <li><a href="#act">Act</a></li>
     </ul>
   </nav>
@@ -565,7 +396,7 @@ body.menu-open{overflow:hidden}
   <div class="menu__foot"><a class="btn-play" href="#catalogue">Press Play</a></div>
 </div>
 
-<!-- ─────────────────────────────  CATALOGUE  ───────────────────────────── -->
+<!-- ═══════════════════════  CATALOGUE  ═══════════════════════ -->
 <section class="sleeve" id="catalogue">
   <div class="shell">
     <p class="tag rv">
@@ -578,7 +409,7 @@ body.menu-open{overflow:hidden}
       Side A · The permanent collection
     </p>
     <h2 class="sec-title rv">Every artist on this label<br>is <em>already gone.</em></h2>
-    <p class="say rv">These recordings exist. What they recorded does not. There is no remaster coming, no reunion tour, no second take — the master tape is the entire remaining evidence that the sound was ever made on Earth.</p>
+    <p class="say rv">These recordings exist. What they recorded does not. There is no remaster coming, no reunion tour, no second take — the master tape is the entire remaining evidence that the sound was ever made on Earth. Every track below is synthesised live in your browser from what the originals are described to sound like.</p>
 
     <div class="tracks">
       <article class="track rv">
@@ -587,37 +418,23 @@ body.menu-open{overflow:hidden}
           <h3 class="track__name">Kauaʻi ʻōʻō</h3>
           <p class="track__where">Alakaʻi plateau, Kauaʻi, Hawaiʻi</p>
           <p class="track__note">The male half of a mating duet. He sings his part, then leaves a gap for the female's answer. The gap is the reason this recording is unbearable — there was no female left to fill it. He was the last of his species, singing to an empty forest.</p>
-
-          <div class="player" id="ooPlayer">
-            <button class="player__btn" id="ooPlay" type="button" aria-pressed="false">
-              <svg id="ooIcon" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true">
-                <path d="M1 1.2v11.6L11 7z" fill="currentColor"/>
-              </svg>
-              <span id="ooLabel">Play the gap</span>
+          <div class="player" id="p-oo" data-player="oo" data-name="Kauaʻi ʻōʻō">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the gap</span>
             </button>
-
-            <p class="sr">
-              A looping reconstruction of the call. Each cycle plays his two-note phrase,
-              followed by roughly three and a half seconds of forest ambience where the
-              female's answering phrase would be. No answer ever arrives.
-            </p>
-
+            <p class="sr">A looping reconstruction. Each cycle plays his two-note phrase, then roughly three and a half seconds of forest where the female's answering phrase belongs. No answer ever arrives.</p>
             <div class="player__groove" aria-hidden="true">
               <div class="player__note" style="left:3%;height:22px"></div>
               <div class="player__note" style="left:11%;height:32px"></div>
-              <div class="player__gap"><span>her answer</span></div>
-              <div class="player__head" id="ooHead"></div>
+              <div class="player__gap" style="left:22%;right:0"><span>her answer</span></div>
+              <div class="player__head"></div>
             </div>
-
             <p class="player__meta" aria-hidden="true">
-              <span>He has called <b id="ooCount">0</b></span>
+              <span>He has called <b data-count>0</b></span>
               <span>Answers <b class="zero">0</b></span>
             </p>
-
-            <p class="player__disc">
-              Synthesised reconstruction of the two-note call, generated in your browser —
-              not the archival audio. The 1987 original is held by the Cornell Lab of Ornithology.
-            </p>
+            <p class="player__disc">Synthesised reconstruction of the two-note call — not the archival audio. The 1987 original is held by the Cornell Lab of Ornithology.</p>
           </div>
         </div>
         <div class="track__meta">
@@ -631,7 +448,22 @@ body.menu-open{overflow:hidden}
         <div>
           <h3 class="track__name">Ivory‑billed woodpecker</h3>
           <p class="track__where">Singer Tract, Louisiana</p>
-          <p class="track__note">A 1935 expedition hauled a tonne of recording equipment into old‑growth swamp and captured its call. The forest was logged soon after. Those few minutes of audio are, to this day, the closest anyone can get to the bird.</p>
+          <p class="track__note">A 1935 expedition hauled a tonne of recording equipment into old‑growth swamp and captured its double knock — two hammer blows on a trunk, a tenth of a second apart — and its flat, nasal call. The forest was logged soon after.</p>
+          <div class="player" id="p-ivory" data-player="ivory" data-name="Ivory‑billed woodpecker">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the double knock</span>
+            </button>
+            <p class="sr">A looping reconstruction of the double knock and the nasal call, over swamp ambience.</p>
+            <div class="player__groove" aria-hidden="true">
+              <div class="player__note" style="left:4%;height:36px"></div>
+              <div class="player__note" style="left:7%;height:30px"></div>
+              <div class="player__note" style="left:44%;height:18px"></div>
+              <div class="player__head"></div>
+            </div>
+            <p class="player__meta" aria-hidden="true"><span>Knocks <b data-count>0</b></span><span>Confirmed sightings since 1944 <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction. The 1935 Cornell Lab recordings are the only widely accepted audio of the species.</p>
+          </div>
         </div>
         <div class="track__meta">
           <span>Recorded <b>1935</b></span>
@@ -645,6 +477,21 @@ body.menu-open{overflow:hidden}
           <h3 class="track__name">Okjökull</h3>
           <p class="track__where">Borgarfjörður, west Iceland</p>
           <p class="track__note">Not an animal — a glacier. Meltwater, shifting ice, the low structural groan of a body of ice big enough to have a name. In 2014 it stopped being a glacier. A plaque was bolted to the bare rock in 2019, addressed to whoever comes next.</p>
+          <div class="player" id="p-ice" data-player="ice" data-name="Okjökull">
+            <button class="player__btn" type="button" aria-pressed="false">
+              <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+              <span>Play the ice</span>
+            </button>
+            <p class="sr">A continuous reconstruction: low structural rumble, meltwater, and the occasional crack of shifting ice.</p>
+            <div class="player__groove" aria-hidden="true">
+              <div class="player__note" style="left:16%;height:14px"></div>
+              <div class="player__note" style="left:38%;height:26px"></div>
+              <div class="player__note" style="left:71%;height:12px"></div>
+              <div class="player__head"></div>
+            </div>
+            <p class="player__meta" aria-hidden="true"><span>Cracks <b data-count>0</b></span><span>Ice remaining <b class="zero">0</b></span></p>
+            <p class="player__disc">Synthesised reconstruction of a glacial soundscape. Okjökull lost glacier status in 2014; the memorial plaque went up in August 2019.</p>
+          </div>
         </div>
         <div class="track__meta">
           <span>Named since <b>1890s</b></span>
@@ -655,47 +502,89 @@ body.menu-open{overflow:hidden}
   </div>
 </section>
 
-<!-- ─────────────────────────────  SILENCED  ───────────────────────────── -->
-<section class="meadow" id="silenced">
+<!-- ═══════════════════════  CHORUS SCRUBBER  ═══════════════════════ -->
+<section class="meadow" id="chorus">
+  <div class="shell">
+    <p class="tag rv">Side B · Drag the year</p>
+    <h2 class="sec-title rv">This is a dawn chorus.<br>Now <em>take away fifty years.</em></h2>
+    <p class="say rv">Every dot is a voice. Drag the slider and the chorus thins out in front of you — and in your speakers. The scale is set by the measured figure: North America has lost about 29% of its breeding birds since 1970. Turn your sound on for this one.</p>
+
+    <div class="chorus__grid">
+      <div class="rv">
+        <div class="voices" id="voices" aria-hidden="true"></div>
+      </div>
+
+      <div class="rv">
+        <p class="year-read" id="yearRead">1970</p>
+        <p class="year-sub" id="yearSub"><b>24</b> voices singing · <span class="lost">0 gone</span></p>
+
+        <label class="sr" for="yearSlider">Year, from 1970 to 2026</label>
+        <input type="range" id="yearSlider" min="1970" max="2026" step="1" value="1970">
+        <div class="scale" aria-hidden="true"><span>1970</span><span>2026</span></div>
+
+        <div class="chorus__ctl">
+          <button class="player__btn" id="chorusPlay" type="button" aria-pressed="false" style="background:var(--ink);color:var(--sky)">
+            <svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1.2v11.6L11 7z" fill="currentColor"/></svg>
+            <span>Play the chorus</span>
+          </button>
+          <button class="chip active" id="ab1970" type="button"><span>1970</span></button>
+          <button class="chip" id="abNow" type="button"><span>Today</span></button>
+        </div>
+        <p class="player__disc" style="opacity:.5">Synthesised chorus. Voice count scales with the measured 29% decline; individual songs are generated, not sampled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════  EVIDENCE  ═══════════════════════ -->
+<section class="sleeve" id="evidence">
   <div class="shell">
     <p class="tag rv">The volume knob is turning left</p>
     <h2 class="sec-title rv">This is not a handful of rare birds.<br>It is the <em>background noise of the planet.</em></h2>
 
     <div class="figs">
       <div class="rv">
-        <p class="fig__n">2.9 billion</p>
+        <p class="fig__n"><span data-countup="2.9" data-dp="1">0</span> billion</p>
         <p class="fig__t">breeding birds lost from the United States and Canada since 1970 — roughly one in four, gone in a single human lifetime.</p>
       </div>
       <div class="rv">
-        <p class="fig__n">25 years</p>
+        <p class="fig__n"><span data-countup="25" data-dp="0">0</span> years</p>
         <p class="fig__t">of recordings across North America and Europe show dawn choruses growing measurably quieter and less varied. The spring you remember was louder. That is not nostalgia — it is data.</p>
       </div>
+    </div>
+
+    <div class="life rv">
+      <p class="life__row">
+        <label for="birth">I was born in</label>
+        <input id="birth" type="number" min="1900" max="2026" value="2009" inputmode="numeric">
+      </p>
+      <div class="life__out" id="lifeOut" role="status" aria-live="polite"></div>
+      <p class="life__note">Bird figure is a straight-line estimate from the measured 1970–present total, not a year-by-year measurement. It is here to give the number a human scale, not to be cited.</p>
     </div>
   </div>
 </section>
 
-<!-- ──────────────────────────────  LISTEN  ────────────────────────────── -->
-<section class="sleeve" id="listen">
+<!-- ═══════════════════════  PLAYBACK / HOPE  ═══════════════════════ -->
+<section class="meadow" id="playback">
   <div class="shell">
-    <p class="tag rv">Side B · The part nobody expects</p>
+    <p class="tag rv">The part nobody expects</p>
     <h2 class="sec-title rv">Here is the strangest thing<br>we have learned: <em>playback works.</em></h2>
-    <p class="say rv">On dead patches of coral reef, researchers rigged underwater speakers and played the sound of a <em>healthy</em> reef — the crackle, the grunts, the clicks. Fish arrived. Twice as many as on the silent patches, and they stayed. The recording did not just document the reef. It started rebuilding it.</p>
+    <p class="say rv">On dead patches of coral reef, researchers rigged underwater speakers and played the sound of a <em>healthy</em> reef — the crackle, the grunts, the clicks. Fish arrived. Roughly twice as many as on the silent patches, and they stayed. The recording did not just document the reef. It started rebuilding it.</p>
     <p class="say rv">That is the whole argument of this page. A recording is not only a headstone. Kept early enough, and played back loud enough, it is a set of instructions for putting something back. Every soundscape still being captured right now is a rescue plan we do not yet know how to use.</p>
     <p class="say rv" style="opacity:.95">The ʻōʻō recording came too late to save anything. The next one doesn't have to.</p>
   </div>
 </section>
 
-<!-- ────────────────────────────────  ACT  ─────────────────────────────── -->
-<section class="meadow" id="act">
+<!-- ═══════════════════════  ACT  ═══════════════════════ -->
+<section class="sleeve" id="act">
   <div class="shell">
     <p class="tag rv">What actually moves the needle</p>
     <h2 class="sec-title rv">Three things. Pick one today.</h2>
-
     <div class="acts">
       <article class="rv">
         <span class="act__n">01</span>
         <h3 class="act__h">Record your own dawn</h3>
-        <p class="act__p">Open a sound‑monitoring app, put your phone on a windowsill at first light, and upload it. Acoustic citizen science is how the 25‑year decline was measured in the first place — the dataset is built from ordinary mornings.</p>
+        <p class="act__p">Open a sound‑monitoring app, put your phone on a windowsill at first light, and upload it. Acoustic citizen science is how the decline above was measured in the first place — the dataset is built from ordinary mornings.</p>
       </article>
       <article class="rv">
         <span class="act__n">02</span>
@@ -708,7 +597,6 @@ body.menu-open{overflow:hidden}
         <p class="act__p">Sound archives and field recordists are running a race against silence on almost no money. Backing a bioacoustics archive or a habitat trust buys the one thing that can't be bought later: the recording made in time.</p>
       </article>
     </div>
-
     <div class="cta-row">
       <a class="btn-lg" href="[YOUR PLEDGE OR DONATE URL]">Do one thing</a>
       <a class="btn-ghost" href="[YOUR SHARE LINK]">Send this to one person</a>
@@ -725,23 +613,44 @@ body.menu-open{overflow:hidden}
     </div>
     <p class="src">
       <b>Sources.</b>
-      Kauaʻi ʻōʻō (<i>Moho braccatus</i>): field recording 1987, Cornell Lab of Ornithology / H. Douglas Pratt; declared extinct by the US Fish &amp; Wildlife Service in October 2023.
+      Kauaʻi ʻōʻō (<i>Moho braccatus</i>): field recording 1987, Cornell Lab of Ornithology; declared extinct by the US Fish &amp; Wildlife Service in October 2023.
       Ivory‑billed woodpecker: 1935 Cornell Lab Singer Tract expedition recordings; last widely accepted sighting 1944; proposed for delisting as extinct in 2021, decision still pending.
       Okjökull: lost glacier status in 2014; memorial plaque "A letter to the future" installed August 2019.
       Coral reef acoustic enrichment: Gordon et al., <i>Nature Communications</i>, 2019 — degraded reef patches with healthy‑reef playback attracted roughly double the fish.
-      2.9 billion birds: Rosenberg et al., <i>Science</i>, 2019.
-      Quieting soundscapes: Morrison et al., <i>Nature Communications</i>, 2021 — 25 years of reconstructed soundscapes across North America and Europe.
-      Footage and stills are illustrative, not documentary records of the species named.
+      2.9 billion birds / 29% decline: Rosenberg et al., <i>Science</i>, 2019.
+      Quieting soundscapes: Morrison et al., <i>Nature Communications</i>, 2021.
+      <b>All audio on this page is synthesised in the browser</b> and is a reconstruction for illustration, never archival material. Footage and stills are illustrative, not documentary records of the species named.
     </p>
   </div>
 </footer>
 
+<div class="deck" id="deck" aria-hidden="true">
+  <svg class="deck__disc" viewBox="0 0 60 60">
+    <circle cx="30" cy="30" r="28" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+    <circle cx="30" cy="30" r="21" fill="none" stroke="currentColor" stroke-width=".6" opacity=".35"/>
+    <circle cx="30" cy="30" r="14" fill="none" stroke="currentColor" stroke-width=".6" opacity=".35"/>
+    <circle cx="30" cy="30" r="6" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/>
+    <circle cx="30" cy="30" r="1.6" fill="currentColor"/>
+    <path d="M30 2v5" stroke="currentColor" stroke-width="1" opacity=".6"/>
+  </svg>
+  <div class="deck__arm" id="deckArm"></div>
+</div>
+
+<div class="np" id="np">
+  <span class="np__eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  <span id="npName">—</span>
+  <button id="npStop" type="button">Stop</button>
+</div>
+
 <script>
 (function(){
-  var menu   = document.getElementById('menu');
-  var burger = document.getElementById('burger');
-  var open   = false;
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ─────────────── menu ─────────────── */
+  var menu = document.getElementById('menu');
+  var burger = document.getElementById('burger');
+  var open = false;
   function setMenu(next){
     open = next;
     menu.classList.toggle('is-open', open);
@@ -750,158 +659,362 @@ body.menu-open{overflow:hidden}
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
     burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   }
-
   burger.addEventListener('click', function(){ setMenu(!open); });
   menu.addEventListener('click', function(e){ if (e.target.closest('a')) setMenu(false); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && open) setMenu(false); });
   window.addEventListener('resize', function(){ if (open && window.innerWidth > 900) setMenu(false); });
 
+  /* ─────────────── hero video ─────────────── */
   var video = document.getElementById('heroVideo');
-  function reveal(){ video.classList.add('is-ready'); }
-  if (video.readyState >= 3) reveal();
-  else video.addEventListener('loadeddata', reveal, { once:true });
-
-  function kick(){
-    var p = video.play();
-    if (p && p.catch) p.catch(function(){});
-  }
+  function revealVid(){ video.classList.add('is-ready'); }
+  if (video.readyState >= 3) revealVid();
+  else video.addEventListener('loadeddata', revealVid, { once:true });
+  function kick(){ var p = video.play(); if (p && p.catch) p.catch(function(){}); }
   kick();
   window.addEventListener('touchstart', kick, { once:true, passive:true });
   window.addEventListener('click', kick, { once:true });
 
+  /* ─────────────── scroll reveals ─────────────── */
   var items = document.querySelectorAll('.rv');
   if (!('IntersectionObserver' in window)) {
-    for (var i = 0; i < items.length; i++) items[i].classList.add('in');
+    Array.prototype.forEach.call(items, function(el){ el.classList.add('in'); });
   } else {
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
-      });
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { rootMargin:'0px 0px -12% 0px' });
-    items.forEach(function(el){ io.observe(el); });
+    Array.prototype.forEach.call(items, function(el){ io.observe(el); });
   }
 
-  /* ── REQ-001: the call, and the gap where the answer should be ── */
-  var wrap  = document.getElementById('ooPlayer');
-  var btn   = document.getElementById('ooPlay');
-  var label = document.getElementById('ooLabel');
-  var icon  = document.getElementById('ooIcon');
-  var head  = document.getElementById('ooHead');
-  var count = document.getElementById('ooCount');
+  /* ─────────────── tonearm = scroll progress ─────────────── */
+  var deck = document.getElementById('deck'), arm = document.getElementById('deckArm');
+  function onScroll(){
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
+    arm.style.transform = 'rotate(' + (-22 + p * 30).toFixed(2) + 'deg)';
+    deck.classList.toggle('on', window.pageYOffset > window.innerHeight * .6);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll, { passive:true });
+  onScroll();
 
+  /* ─────────────── count-up figures ─────────────── */
+  var ups = document.querySelectorAll('[data-countup]');
+  function runUp(el){
+    var target = parseFloat(el.getAttribute('data-countup'));
+    var dp = parseInt(el.getAttribute('data-dp'), 10) || 0;
+    if (reduce){ el.textContent = target.toFixed(dp); return; }
+    var t0 = performance.now(), dur = 1500;
+    (function step(now){
+      var k = Math.min(1, (now - t0) / dur);
+      var eased = 1 - Math.pow(1 - k, 3);
+      el.textContent = (target * eased).toFixed(dp);
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  if ('IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ runUp(e.target); io2.unobserve(e.target); } });
+    }, { threshold:.6 });
+    Array.prototype.forEach.call(ups, function(el){ io2.observe(el); });
+  } else {
+    Array.prototype.forEach.call(ups, function(el){ runUp(el); });
+  }
+
+  /* ─────────────── "in your lifetime" ─────────────── */
+  var LOST = 2.9e9, Y0 = 1970, YN = 2026;
+  var birth = document.getElementById('birth'), lifeOut = document.getElementById('lifeOut');
+  function fmt(n){
+    if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + ' billion';
+    return Math.round(n / 1e6) + ' million';
+  }
+  function life(){
+    var y = parseInt(birth.value, 10);
+    if (isNaN(y) || y < 1900 || y > YN){ lifeOut.innerHTML = ''; return; }
+    var from = Math.max(y, Y0);
+    var lost = LOST * (YN - from) / (YN - Y0);
+    var html = '<p class="life__big">Since ' + y + ', roughly <b>' + fmt(lost) + '</b> breeding birds have gone missing from North America.</p>';
+    if (y > 1987) html += '<p class="life__sting">The Kauaʻi ʻōʻō fell silent before you were born. You have never heard one, and you never will. REQ‑001 is the closest you can get.</p>';
+    else if (y > 1944) html += '<p class="life__sting">You were alive while the last Kauaʻi ʻōʻō was still calling. Somewhere in your lifetime, that forest went quiet for good.</p>';
+    else html += '<p class="life__sting">You were alive while both the ivory‑billed woodpecker and the Kauaʻi ʻōʻō could still be heard. You have outlived two of them.</p>';
+    if (y < Y0) html += '<p class="life__sting" style="opacity:.6">Counted from 1970, where the measurements begin.</p>';
+    lifeOut.innerHTML = html;
+  }
+  birth.addEventListener('input', life);
+  life();
+
+  /* ═══════════════ audio engine ═══════════════ */
   var AC = window.AudioContext || window.webkitAudioContext;
-  if (btn && AC) {
-    var CYCLE = 4.6;                 // seconds: phrase (~1s) + the silence (~3.6s)
-    var ctx, master, verb, bed, bedGain;
-    var timer = null, raf = null, on = false, calls = 0, cycleAt = 0;
+  var actx = null, master = null, verbBus = null, noiseBuf = null;
+  var registry = {}, active = null;
+  var np = document.getElementById('np'), npName = document.getElementById('npName');
 
-    // a short decaying-noise impulse gives the call a forest tail
-    function impulse(){
-      var n = Math.floor(ctx.sampleRate * 1.8);
-      var buf = ctx.createBuffer(2, n, ctx.sampleRate);
-      for (var c = 0; c < 2; c++){
-        var d = buf.getChannelData(c);
-        for (var i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/n, 2.6);
-      }
-      return buf;
+  function ensure(){
+    if (actx) return actx;
+    actx = new AC();
+    master = actx.createGain(); master.gain.value = .85; master.connect(actx.destination);
+    var conv = actx.createConvolver();
+    var n = Math.floor(actx.sampleRate * 1.9), ib = actx.createBuffer(2, n, actx.sampleRate);
+    for (var c = 0; c < 2; c++){
+      var d = ib.getChannelData(c);
+      for (var i = 0; i < n; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/n, 2.6);
     }
-
-    // quiet band-passed noise — the forest keeps going through the silence
-    function ambience(){
-      var n = Math.floor(ctx.sampleRate * 2);
-      var buf = ctx.createBuffer(1, n, ctx.sampleRate);
-      var d = buf.getChannelData(0);
-      for (var i = 0; i < n; i++) d[i] = Math.random()*2-1;
-      var src = ctx.createBufferSource();
-      src.buffer = buf; src.loop = true;
-      var bp = ctx.createBiquadFilter();
-      bp.type = 'bandpass'; bp.frequency.value = 2200; bp.Q.value = .45;
-      bedGain = ctx.createGain(); bedGain.gain.value = 0;
-      src.connect(bp); bp.connect(bedGain); bedGain.connect(master);
-      src.start();
-      bedGain.gain.linearRampToValueAtTime(.05, ctx.currentTime + 1.4);
-      return src;
-    }
-
-    // one pure, vibrato'd whistle note that glides downward
-    function tone(t, f0, f1, dur, peak){
-      var o = ctx.createOscillator(), g = ctx.createGain(), lp = ctx.createBiquadFilter();
-      var lfo = ctx.createOscillator(), lg = ctx.createGain();
-      o.type = 'sine';
-      o.frequency.setValueAtTime(f0, t);
-      o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    conv.buffer = ib;
+    var vg = actx.createGain(); vg.gain.value = .4;
+    verbBus = actx.createGain(); verbBus.connect(conv); conv.connect(vg); vg.connect(actx.destination);
+    var nn = Math.floor(actx.sampleRate * 2);
+    noiseBuf = actx.createBuffer(1, nn, actx.sampleRate);
+    var nd = noiseBuf.getChannelData(0);
+    for (var j = 0; j < nn; j++) nd[j] = Math.random()*2-1;
+    return actx;
+  }
+  function noiseSrc(){ var s = actx.createBufferSource(); s.buffer = noiseBuf; s.loop = true; return s; }
+  function tone(t, f0, f1, dur, peak, type, vib){
+    var o = actx.createOscillator(), g = actx.createGain(), lp = actx.createBiquadFilter();
+    o.type = type || 'sine';
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    if (vib){
+      var lfo = actx.createOscillator(), lg = actx.createGain();
       lfo.frequency.value = 5.4; lg.gain.value = f0 * .013;
-      lfo.connect(lg); lg.connect(o.frequency);
-      lp.type = 'lowpass'; lp.frequency.value = 3400;
-      g.gain.setValueAtTime(.0001, t);
-      g.gain.exponentialRampToValueAtTime(peak, t + .05);
-      g.gain.exponentialRampToValueAtTime(.0001, t + dur);
-      o.connect(lp); lp.connect(g); g.connect(master); g.connect(verb);
-      lfo.start(t); o.start(t);
-      lfo.stop(t + dur + .05); o.stop(t + dur + .05);
+      lfo.connect(lg); lg.connect(o.frequency); lfo.start(t); lfo.stop(t + dur + .05);
     }
+    lp.type = 'lowpass'; lp.frequency.value = 4200;
+    g.gain.setValueAtTime(.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + .04);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(lp); lp.connect(g); g.connect(master); g.connect(verbBus);
+    o.start(t); o.stop(t + dur + .05);
+  }
+  function burst(t, freq, q, peak, dur, type){
+    var s = noiseSrc(), f = actx.createBiquadFilter(), g = actx.createGain();
+    f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+    g.gain.setValueAtTime(peak, t);
+    g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    s.connect(f); f.connect(g); g.connect(master); g.connect(verbBus);
+    s.start(t); s.stop(t + dur + .05);
+  }
+  function bed(freq, q, level, type){
+    var s = noiseSrc(), f = actx.createBiquadFilter(), g = actx.createGain();
+    f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+    g.gain.value = 0;
+    s.connect(f); f.connect(g); g.connect(master);
+    s.start();
+    g.gain.linearRampToValueAtTime(level, actx.currentTime + 1.2);
+    return { src:s, gain:g };
+  }
 
-    function phrase(t){
-      tone(t,        1180, 1120, .30, .16);   // "oh-"
-      tone(t + .42,   960,  880, .58, .14);   // "-oh", falling, then nothing
+  function setActive(id){
+    active = id;
+    if (id && registry[id]){
+      npName.textContent = registry[id].name;
+      np.classList.add('on');
+    } else {
+      np.classList.remove('on');
     }
+  }
+  function stopAll(except){
+    for (var k in registry) if (k !== except && registry[k].playing) registry[k].stop();
+  }
+  document.getElementById('npStop').addEventListener('click', function(){ stopAll(null); });
 
-    function cycle(){
-      phrase(ctx.currentTime + .06);
-      calls++;
-      if (count) count.textContent = calls;
-      cycleAt = performance.now();
-      timer = setTimeout(cycle, CYCLE * 1000);
-    }
+  /* ── generic transport for the three catalogue tracks ── */
+  function mountTrack(el, spec){
+    var id = el.getAttribute('data-player');
+    var name = el.getAttribute('data-name');
+    var btn = el.querySelector('.player__btn');
+    var label = btn.querySelector('span');
+    var icon = btn.querySelector('svg');
+    var head = el.querySelector('.player__head');
+    var counter = el.querySelector('[data-count]');
+    var timer = null, raf = null, playing = false, count = 0, cycleAt = 0, beds = [];
+    var PLAY = '<path d="M1 1.2v11.6L11 7z" fill="currentColor"/>';
+    var STOP = '<rect x="1" y="1.2" width="3.6" height="11.6" fill="currentColor"/><rect x="7.4" y="1.2" width="3.6" height="11.6" fill="currentColor"/>';
+    var restLabel = label.textContent;
 
     function sweep(){
-      if (!on) return;
-      var p = ((performance.now() - cycleAt) / (CYCLE * 1000)) % 1;
+      if (!playing) return;
+      var p = ((performance.now() - cycleAt) / (spec.cycle * 1000)) % 1;
       head.style.left = (p * 100).toFixed(2) + '%';
       raf = requestAnimationFrame(sweep);
     }
-
+    function loop(){
+      var hits = spec.fire(actx.currentTime + .06);
+      count += (hits || 1);
+      if (counter) counter.textContent = count;
+      cycleAt = performance.now();
+      timer = setTimeout(loop, spec.cycle * 1000);
+    }
     function start(){
-      if (!ctx){
-        ctx = new AC();
-        master = ctx.createGain(); master.gain.value = .9; master.connect(ctx.destination);
-        verb = ctx.createConvolver(); verb.buffer = impulse();
-        var vg = ctx.createGain(); vg.gain.value = .5;
-        verb.connect(vg); vg.connect(ctx.destination);
-        bed = ambience();
-      }
-      if (ctx.state === 'suspended') ctx.resume();
-      on = true;
-      wrap.classList.add('is-playing');
-      btn.setAttribute('aria-pressed', 'true');
+      ensure();
+      if (actx.state === 'suspended') actx.resume();
+      stopAll(id);
+      playing = true;
+      beds = spec.beds ? spec.beds() : [];
+      el.classList.add('is-playing');
+      btn.setAttribute('aria-pressed','true');
       label.textContent = 'Stop';
-      icon.innerHTML = '<rect x="1" y="1.2" width="3.6" height="11.6" fill="currentColor"/><rect x="7.4" y="1.2" width="3.6" height="11.6" fill="currentColor"/>';
-      cycle();
-      sweep();
+      icon.innerHTML = STOP;
+      setActive(id);
+      loop(); sweep();
     }
-
     function stop(){
-      on = false;
-      if (timer) { clearTimeout(timer); timer = null; }
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-      if (bedGain) bedGain.gain.linearRampToValueAtTime(0, ctx.currentTime + .4);
-      wrap.classList.remove('is-playing');
-      btn.setAttribute('aria-pressed', 'false');
-      label.textContent = 'Play the gap';
-      icon.innerHTML = '<path d="M1 1.2v11.6L11 7z" fill="currentColor"/>';
+      playing = false;
+      if (timer){ clearTimeout(timer); timer = null; }
+      if (raf){ cancelAnimationFrame(raf); raf = null; }
+      beds.forEach(function(b){
+        try{
+          b.gain.gain.cancelScheduledValues(actx.currentTime);
+          b.gain.gain.setValueAtTime(b.gain.gain.value, actx.currentTime);
+          b.gain.gain.linearRampToValueAtTime(0, actx.currentTime + .35);
+          b.src.stop(actx.currentTime + .5);
+        }catch(err){}
+      });
+      beds = [];
+      el.classList.remove('is-playing');
+      btn.setAttribute('aria-pressed','false');
+      label.textContent = restLabel;
+      icon.innerHTML = PLAY;
+      if (active === id) setActive(null);
     }
-
-    btn.addEventListener('click', function(){ on ? stop() : start(); });
-
-    // stop it if the listener scrolls away — it should never follow them down the page
+    registry[id] = { name:name, stop:stop, get playing(){ return playing; } };
+    btn.addEventListener('click', function(){ playing ? stop() : start(); });
     if ('IntersectionObserver' in window){
       new IntersectionObserver(function(es){
-        es.forEach(function(e){ if (!e.isIntersecting && on) stop(); });
-      }, { threshold:0 }).observe(wrap);
+        es.forEach(function(e){ if (!e.isIntersecting && playing) stop(); });
+      }, { threshold:0 }).observe(el);
     }
-  } else if (btn) {
-    btn.disabled = true;
-    label.textContent = 'Audio unsupported';
+  }
+
+  if (AC){
+    var oo = document.getElementById('p-oo');
+    if (oo) mountTrack(oo, {
+      cycle: 4.6,
+      beds: function(){ return [bed(2200, .45, .05)]; },
+      fire: function(t){ tone(t, 1180, 1120, .30, .16, 'sine', true); tone(t + .42, 960, 880, .58, .14, 'sine', true); return 1; }
+    });
+
+    var iv = document.getElementById('p-ivory');
+    if (iv) mountTrack(iv, {
+      cycle: 3.4,
+      beds: function(){ return [bed(1400, .4, .035)]; },
+      fire: function(t){
+        burst(t, 950, 1.1, .5, .085);
+        burst(t + .075, 820, 1.1, .42, .085);
+        if (Math.random() < .55){
+          tone(t + 1.35, 700, 630, .22, .07, 'square', false);
+          if (Math.random() < .5) tone(t + 1.68, 700, 630, .2, .06, 'square', false);
+        }
+        return 2;
+      }
+    });
+
+    var ice = document.getElementById('p-ice');
+    if (ice) mountTrack(ice, {
+      cycle: 2.6,
+      beds: function(){ return [ bed(70, .6, .30, 'lowpass'), bed(3200, 1.6, .022) ]; },
+      fire: function(t){
+        var hits = 0;
+        if (Math.random() < .55){ burst(t + Math.random() * 1.6, 1500 + Math.random() * 1400, 2.2, .30, .34, 'highpass'); hits = 1; }
+        if (Math.random() < .35) tone(t + Math.random() * 2, 58, 44, 1.6, .10, 'sine', false);
+        return hits;
+      }
+    });
+  }
+
+  /* ═══════════════ the dawn chorus scrubber ═══════════════ */
+  var VOICES = 24, DECLINE = .29;
+  var grid = document.getElementById('voices');
+  var slider = document.getElementById('yearSlider');
+  var yearRead = document.getElementById('yearRead');
+  var yearSub = document.getElementById('yearSub');
+  var cPlay = document.getElementById('chorusPlay');
+  var dots = [];
+  if (grid){
+    for (var v = 0; v < VOICES; v++){
+      var d = document.createElement('span');
+      d.className = 'voice lit';
+      grid.appendChild(d);
+      dots.push(d);
+    }
+  }
+  var liveCount = VOICES, cPlaying = false, cTimer = null, cBeds = [];
+  var BANDS = [2400,3100,1800,2750,3600,2100,1500,2900,3300,1950,2600,4000,2250,3450,1700,2850,3150,2050,2450,3700,1850,2650,3350,2950];
+
+  function applyYear(y){
+    var frac = (y - Y0) / (YN - Y0);
+    liveCount = Math.round(VOICES * (1 - DECLINE * frac));
+    yearRead.textContent = y;
+    var gone = VOICES - liveCount;
+    yearSub.innerHTML = '<b>' + liveCount + '</b> voices singing · <span class="lost">' + gone + ' gone</span>';
+    dots.forEach(function(el, i){ el.classList.toggle('lit', i < liveCount); });
+    document.getElementById('ab1970').classList.toggle('active', y === Y0);
+    document.getElementById('abNow').classList.toggle('active', y === YN);
+  }
+  function chirp(t, base){
+    var n = 2 + Math.floor(Math.random() * 3);
+    for (var i = 0; i < n; i++){
+      var tt = t + i * .055;
+      var f = base * (1 + Math.random() * .2);
+      tone(tt, f, f * (.72 + Math.random() * .55), .06, .045, 'sine', false);
+    }
+  }
+  function cLoop(){
+    var now = actx.currentTime + .03;
+    for (var i = 0; i < liveCount; i++){
+      if (Math.random() < .12) chirp(now + Math.random() * .12, BANDS[i]);
+    }
+    if (Math.random() < .3 * (liveCount / VOICES)) {
+      dots.forEach(function(el){ el.classList.remove('sing'); });
+      var pick = Math.floor(Math.random() * liveCount);
+      if (dots[pick]) { dots[pick].classList.add('sing'); }
+    }
+    cTimer = setTimeout(cLoop, 130);
+  }
+  function cStart(){
+    ensure();
+    if (actx.state === 'suspended') actx.resume();
+    stopAll('chorus');
+    cPlaying = true;
+    cBeds = [ bed(1800, .35, .03), bed(300, .5, .05, 'lowpass') ];
+    cPlay.setAttribute('aria-pressed','true');
+    cPlay.querySelector('span').textContent = 'Stop';
+    cPlay.querySelector('svg').innerHTML = '<rect x="1" y="1.2" width="3.6" height="11.6" fill="currentColor"/><rect x="7.4" y="1.2" width="3.6" height="11.6" fill="currentColor"/>';
+    setActive('chorus');
+    cLoop();
+  }
+  function cStop(){
+    cPlaying = false;
+    if (cTimer){ clearTimeout(cTimer); cTimer = null; }
+    cBeds.forEach(function(b){
+      try{
+        b.gain.gain.cancelScheduledValues(actx.currentTime);
+        b.gain.gain.setValueAtTime(b.gain.gain.value, actx.currentTime);
+        b.gain.gain.linearRampToValueAtTime(0, actx.currentTime + .35);
+        b.src.stop(actx.currentTime + .5);
+      }catch(err){}
+    });
+    cBeds = [];
+    dots.forEach(function(el){ el.classList.remove('sing'); });
+    cPlay.setAttribute('aria-pressed','false');
+    cPlay.querySelector('span').textContent = 'Play the chorus';
+    cPlay.querySelector('svg').innerHTML = '<path d="M1 1.2v11.6L11 7z" fill="currentColor"/>';
+    if (active === 'chorus') setActive(null);
+  }
+  if (slider && AC){
+    registry['chorus'] = { name:'Dawn chorus', stop:cStop, get playing(){ return cPlaying; } };
+    slider.addEventListener('input', function(){ applyYear(parseInt(slider.value, 10)); });
+    cPlay.addEventListener('click', function(){ cPlaying ? cStop() : cStart(); });
+    document.getElementById('ab1970').addEventListener('click', function(){ slider.value = Y0; applyYear(Y0); });
+    document.getElementById('abNow').addEventListener('click', function(){ slider.value = YN; applyYear(YN); });
+    if ('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ if (!e.isIntersecting && cPlaying) cStop(); });
+      }, { threshold:0 }).observe(document.getElementById('chorus'));
+    }
+    applyYear(Y0);
+  } else if (slider){
+    applyYear(Y0);
+    if (cPlay){ cPlay.disabled = true; cPlay.querySelector('span').textContent = 'Audio unsupported'; }
   }
 })();
 </script>
